@@ -1,66 +1,92 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Admin · Shekinah Nation London</title>
 <meta name="robots" content="noindex">
-<meta name="theme-color" content="#0c0a09">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="icon" href="logo.png">
 <link rel="stylesheet" href="style.css">
 <style>
-  .top { position: sticky; top: 0; z-index: 5; background: rgba(12,10,9,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
-  .top .in { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
-  .top .brand { margin: 0; }
-  .tabs { display: flex; gap: 4px; overflow-x: auto; flex: 1; scrollbar-width: none; }
-  .tabs button { background: none; border: 0; color: var(--muted); font: 500 .95rem "DM Sans"; padding: 9px 12px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
-  .tabs button.on { background: #2a1f12; color: var(--gold2); }
-  .who { color: var(--muted); font-size: .82rem; display: flex; gap: 10px; align-items: center; }
-  .grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
-  .stat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
-  .stat .v { font-family: "Cormorant Garamond", serif; font-size: 2.4rem; line-height: 1; color: var(--gold2); }
-  .stat .l { color: var(--muted); font-size: .85rem; margin-top: 6px; }
-  .bday { background: linear-gradient(90deg, #3a2610, #1b1612); border: 1px solid #6b4a1c; border-radius: var(--radius); padding: 16px 18px; margin-bottom: 18px; }
+  body { background: var(--ivory); }
+  .top { position: sticky; top: 0; z-index: 5; background: rgba(255,255,255,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
+  .top .in { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; }
+  .topbrand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+  .topbrand img { height: 44px; width: auto; }
+  .topbrand span { border-left: 1px solid var(--line); padding-left: 12px; font-size: .78rem; line-height: 1.25; color: var(--muted); }
+  .topbrand b { display: block; color: var(--forest); font-weight: 700; font-size: .9rem; }
+  .tabs { display: flex; gap: 4px; overflow-x: auto; flex: 1; scrollbar-width: none; order: 3; flex-basis: 100%; }
+  @media (min-width: 900px) { .tabs { order: 0; flex-basis: auto; } }
+  .tabs::-webkit-scrollbar { display: none; }
+  .tabs button { background: none; border: 0; color: var(--muted); font: 600 .9rem "Plus Jakarta Sans", sans-serif; padding: 9px 14px; border-radius: 10px; cursor: pointer; white-space: nowrap; transition: background .15s, color .15s; }
+  .tabs button:hover { background: var(--line-soft); color: var(--forest); }
+  .tabs button.on { background: var(--emerald-50); color: var(--emerald); }
+  .who { color: var(--muted); font-size: .8rem; display: flex; gap: 10px; align-items: center; margin-left: auto; }
+  @media (max-width: 600px) { #whoName { display: none; } .top .in { gap: 8px 12px; } }
+  .wrap.wide { padding-top: 24px; }
+  section > h2:first-child { margin-top: 4px; }
+  .grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+  .stat { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
+  .stat .v { font-family: "Fraunces", Georgia, serif; font-weight: 500; font-size: 2.3rem; line-height: 1; color: var(--forest); }
+  .stat .l { color: var(--muted); font-size: .84rem; margin-top: 8px; }
+  .stat:first-child .v { color: var(--emerald); }
+  .bday { background: var(--gold-50); border: 1px solid #F3D7A0; border-radius: 16px; padding: 16px 18px; margin-bottom: 16px; color: var(--forest); }
   .bday ul { margin: 8px 0 0; padding-left: 18px; }
-  .bdgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 12px; }
-  .bdcard { background: rgba(0,0,0,.25); border-radius: 12px; padding: 12px; }
-  .bdimg { aspect-ratio: 1007 / 1280; background: #120e0b; border-radius: 10px; display: grid; place-items: center; overflow: hidden; margin-bottom: 8px; text-align: center; padding: 6px; }
-  .bdimg img { width: 100%; height: 100%; object-fit: cover; display: block; }
-  .tbl { width: 100%; border-collapse: collapse; font-size: .92rem; }
-  .tbl th { text-align: left; color: var(--muted); font-weight: 500; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; padding: 10px 8px; border-bottom: 1px solid var(--line); }
-  .tbl td { padding: 10px 8px; border-bottom: 1px solid #221c17; vertical-align: middle; }
+  .bdgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin-top: 12px; }
+  .bdcard { background: var(--white); border: 1px solid #F3E2BF; border-radius: 14px; padding: 12px; }
+  .bdimg { aspect-ratio: 1007 / 1280; background: var(--line-soft); border-radius: 10px; display: grid; place-items: center; overflow: hidden; margin-bottom: 10px; text-align: center; padding: 6px; }
+  .bdimg img { width: calc(100% + 12px); height: calc(100% + 12px); margin: -6px; object-fit: cover; display: block; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: .9rem; }
+  .tbl th { text-align: left; color: var(--muted); font-weight: 600; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; padding: 10px 8px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  .tbl td { padding: 10px 8px; border-bottom: 1px solid var(--line-soft); vertical-align: middle; color: var(--ink); }
+  .tbl td b { color: var(--forest); font-weight: 600; }
   .tbl tr.click { cursor: pointer; }
-  .tbl tr.click:hover td { background: #17120e; }
+  .tbl tr.click:hover td { background: #F7F5F0; }
+  .tbl input { height: 40px; font-size: .9rem; }
   .scroll { overflow-x: auto; }
-  .av { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: #2a2119; display: inline-grid; place-items: center; color: var(--gold2); font-size: .85rem; vertical-align: middle; }
-  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .78rem; border: 1px solid var(--line); color: var(--muted); }
-  .pill.member { border-color: #6b4a1c; color: var(--gold2); }
-  .pill.first_timer { border-color: #24503a; color: #b5e6c6; }
+  .av { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: var(--purple-50); display: inline-grid; place-items: center; color: var(--purple); font-size: .8rem; font-weight: 700; vertical-align: middle; }
+  .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .76rem; font-weight: 600; background: var(--line-soft); color: var(--muted); white-space: nowrap; }
+  .pill.member { background: var(--purple-50); color: var(--purple); }
+  .pill.first_timer { background: var(--emerald-50); color: var(--emerald); }
   .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
-  .toolbar input, .toolbar select { width: auto; flex: 1 1 180px; padding: 10px 12px; }
-  .modal { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: grid; place-items: center; z-index: 20; padding: 16px; }
-  .modal .box { background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); width: min(720px, 100%); max-height: 92vh; overflow: auto; padding: 22px; }
-  .bigav { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; background: #2a2119; display: grid; place-items: center; font-size: 2rem; color: var(--gold2); font-family: "Cormorant Garamond", serif; }
-  #reader { width: 100%; max-width: 420px; margin: 0 auto; border-radius: 14px; overflow: hidden; background: #000; }
-  .scanres { max-width: 420px; margin: 16px auto; text-align: center; border-radius: var(--radius); padding: 18px; border: 1px solid var(--line); }
-  .scanres.ok { border-color: #24503a; background: #102017; }
-  .scanres.warn { border-color: #6b4a1c; background: #2a1f12; }
-  .scanres.bad { border-color: #5a2a24; background: #2a1210; }
-  .scanres img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; }
-  .bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; margin-top: 10px; }
-  .bars div { flex: 1; background: linear-gradient(180deg, var(--gold2), var(--gold)); border-radius: 6px 6px 0 0; position: relative; min-height: 2px; }
-  .bars span { position: absolute; top: -20px; left: 0; right: 0; text-align: center; font-size: .78rem; color: var(--text); }
-  .barl { display: flex; gap: 8px; } .barl div { flex: 1; text-align: center; font-size: .72rem; color: var(--muted); }
-  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
+  .toolbar label { margin: 0; }
+  .toolbar input, .toolbar select { width: auto; flex: 1 1 180px; height: 42px; }
+  .modal { position: fixed; inset: 0; background: rgba(23,43,41,.45); display: grid; place-items: center; z-index: 20; padding: 16px; }
+  .modal .box { background: var(--white); border: 1px solid var(--line); border-radius: 20px; width: min(720px, 100%); max-height: 92vh; overflow: auto; padding: 24px; box-shadow: 0 24px 60px -20px rgba(23,43,41,.35); }
+  .bigav { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; background: var(--purple-50); display: grid; place-items: center; font-size: 2rem; color: var(--purple); font-family: "Fraunces", Georgia, serif; }
+  #reader { width: 100%; max-width: 420px; margin: 0 auto; border-radius: 16px; overflow: hidden; background: var(--forest); }
+  .scanres { max-width: 420px; margin: 16px auto; text-align: center; border-radius: 16px; padding: 18px; border: 1px solid var(--line); background: var(--white); }
+  .scanres.ok { border-color: #A9D3CB; background: var(--emerald-50); }
+  .scanres.warn { border-color: #F3D7A0; background: var(--gold-50); }
+  .scanres.bad { border-color: #E8BDB9; background: var(--err-50); }
+  .scanres img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin: 0 auto; }
+  .bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; margin-top: 26px; }
+  .bars div { flex: 1; background: var(--emerald); border-radius: 6px 6px 0 0; position: relative; min-height: 2px; }
+  .bars div:last-child { background: var(--purple); }
+  .bars span { position: absolute; top: -20px; left: 0; right: 0; text-align: center; font-size: .76rem; font-weight: 600; color: var(--forest); }
+  .barl { display: flex; gap: 8px; margin-top: 6px; } .barl div { flex: 1; text-align: center; font-size: .7rem; color: var(--muted); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; } @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
+  .two .card, .grid4 + .two .card { margin: 16px 0 0; }
   .linkbox { display: flex; gap: 8px; } .linkbox input { flex: 1; font-size: .82rem; }
-  @media print { body * { visibility: hidden; } #poster, #poster * { visibility: visible; } #poster { position: absolute; inset: 0; background: #fff; color: #000; } }
+  .uplist > div { padding: 8px 0; border-bottom: 1px solid var(--line-soft); }
+  .uplist b { color: var(--forest); }
+  #poster { background: #fff; color: var(--forest); border: 1px solid var(--line); border-radius: 16px; padding: 32px 24px; margin-top: 16px; text-align: center; }
+  #poster .plogo { width: 120px; margin: 0 auto 14px; display: block; }
+  #poster .ph { font: 500 2.6rem/1.1 "Fraunces", Georgia, serif; margin: 6px 0 6px; color: var(--forest); }
+  #poster .ps { font-size: 1rem; color: var(--muted); margin-bottom: 22px; }
+  #poster .pq { display: flex; gap: 32px; justify-content: center; flex-wrap: wrap; }
+  #poster .pq img { width: 210px; border: 1px solid var(--line); border-radius: 14px; padding: 8px; background: #fff; }
+  #poster .pq b { display: block; margin-top: 8px; font-size: 1rem; color: var(--emerald); }
+  @media print { body * { visibility: hidden; } #poster, #poster * { visibility: visible; } #poster { position: absolute; inset: 0; border: 0; } }
 </style>
 </head>
 <body>
 
 <!-- ===== LOGIN ===== -->
 <main class="wrap" id="loginView">
-  <div class="brand"><div class="mark">S</div><div><b>SHEKINAH NATION</b><small>London · Team access</small></div></div>
-  <h1>Sign in</h1>
+  <div class="brand-hero"><img class="logo" src="logo.png" alt="Shekinah Nation" width="420" height="372"></div>
+  <div class="page-head"><p class="eyebrow">Team access</p><h1>Sign in</h1><p class="lead">Members, attendance and birthdays for Shekinah Nation London.</p></div>
   <form id="lf" class="card" novalidate>
     <label for="lem">Email</label><input id="lem" type="email" autocomplete="username">
     <label for="lpw">Password</label><input id="lpw" type="password" autocomplete="current-password">
@@ -73,7 +99,7 @@
 <!-- ===== APP ===== -->
 <div id="appView" class="hidden">
   <div class="top"><div class="in">
-    <div class="brand"><div class="mark">S</div><div><b>SNL</b><small>Members</small></div></div>
+    <a class="topbrand" href="#home"><img src="logo.png" alt="Shekinah Nation" width="420" height="372"><span><b>London</b>Members</span></a>
     <nav class="tabs" id="tabs"></nav>
     <div class="who"><span id="whoName"></span><button class="btn ghost small" id="logout">Sign out</button></div>
   </div></div>
@@ -85,7 +111,7 @@
       <div class="grid4" id="stats"></div>
       <div class="two">
         <div class="card"><h3>Attendance · last 8 Sundays</h3><div id="trend"></div></div>
-        <div class="card"><h3>Upcoming birthdays</h3><div id="upcoming" class="muted">—</div></div>
+        <div class="card"><h3>Upcoming birthdays</h3><div id="upcoming" class="muted uplist">—</div></div>
       </div>
       <div class="card"><h3>Newest sign-ups</h3><div class="scroll" id="newest"></div></div>
     </section>
@@ -183,13 +209,14 @@
         <h3>Door poster</h3>
         <p class="muted">Print this and put it at the cinema entrance. Members without their QR can scan it and check in with their phone number. First-timers get a link to the welcome form.</p>
         <button class="btn small" onclick="window.print()">Print poster</button>
-        <div id="poster" style="background:#fff;color:#111;border-radius:14px;padding:30px;margin-top:16px;text-align:center">
-          <div style="font:600 13px DM Sans;letter-spacing:.3em">SHEKINAH NATION LONDON</div>
-          <div style="font:600 46px 'Cormorant Garamond';margin:10px 0 4px">Welcome home.</div>
-          <div style="font:16px DM Sans;margin-bottom:20px">Scan to check in — or fill the welcome form if it's your first time.</div>
-          <div style="display:flex;gap:30px;justify-content:center;flex-wrap:wrap">
-            <div><img id="posterQr1" style="width:220px"><div style="font:600 16px DM Sans">Check in</div></div>
-            <div><img id="posterQr2" style="width:220px"><div style="font:600 16px DM Sans">First time here?</div></div>
+        <div id="poster">
+          <img class="plogo" src="logo.png" alt="Shekinah Nation">
+          <p class="eyebrow" style="justify-content:center">Shekinah Nation London</p>
+          <div class="ph">Welcome home.</div>
+          <div class="ps">Scan to check in, or fill the welcome form if it's your first time.</div>
+          <div class="pq">
+            <div><img id="posterQr1" alt="Check-in QR code"><b>Check in</b></div>
+            <div><img id="posterQr2" alt="Welcome form QR code"><b>First time here?</b></div>
           </div>
         </div>
       </div>
@@ -292,9 +319,9 @@ async function renderHome() {
   $("#bdayBanner").innerHTML = todaysBdays.length ? `<div class="bday"><b>🎂 Birthday${todaysBdays.length > 1 ? "s" : ""} today</b>
     <div class="bdgrid">${todaysBdays.map((b, i) => `
       <div class="bdcard">
-        <div id="bdimg${i}" class="bdimg">${b.birthday_share ? '<span class="muted">Loading card…</span>' : '<span class="muted" style="font-size:.85rem">No public post: they haven\'t opted in</span>'}</div>
+        ${b.birthday_share ? `<div id="bdimg${i}" class="bdimg"><span class="muted">Loading card…</span></div>` : ""}
         <div><b>${esc(b.first_name)} ${esc(b.last_name)}</b>${b.turning > 0 && b.turning < 120 ? ` · turning ${b.turning}` : ""}</div>
-        <div class="muted" style="font-size:.82rem">${b.sms_status ? `Text message: ${esc(b.sms_status)}` : ""}</div>
+        <div class="muted" style="font-size:.82rem">${b.birthday_share ? "" : "No public post (they haven't opted in). Send a personal message instead."}${b.sms_status ? `${b.birthday_share ? "" : " · "}Text message: ${esc(b.sms_status)}` : ""}</div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
           ${b.birthday_share ? `<button class="btn small wa" data-share="${i}">Share to WhatsApp</button>` : ""}
           ${b.phone ? `<a class="btn ghost small" href="https://wa.me/${esc(waNum(b.phone))}?text=${encodeURIComponent(fillName(settings.birthday_caption || "Happy birthday, {name}!", b.first_name))}" target="_blank">Message them</a>` : ""}
@@ -324,7 +351,7 @@ async function renderHome() {
     <div class="barl">${suns.map((s) => `<div>${nice(s, { day: "numeric", month: "short" })}</div>`).join("")}</div>`;
   const horizon = addDays(today, 30);
   const up = active.filter((m) => m.date_of_birth).map((m) => ({ m, d: nextBirthday(m.date_of_birth) })).filter((x) => x.d > today && x.d <= horizon).sort((a, b) => a.d.localeCompare(b.d));
-  $("#upcoming").innerHTML = up.length ? up.map(({ m, d }) => `<div style="padding:6px 0;border-bottom:1px solid #221c17"><b style="color:var(--text)">${esc(m.first_name)} ${esc(m.last_name)}</b> · ${nice(d, { weekday: "short", day: "numeric", month: "short" })}</div>`).join("") : "No birthdays in the next 30 days.";
+  $("#upcoming").innerHTML = up.length ? up.map(({ m, d }) => `<div><b>${esc(m.first_name)} ${esc(m.last_name)}</b> · ${nice(d, { weekday: "short", day: "numeric", month: "short" })}</div>`).join("") : "No birthdays in the next 30 days.";
   $("#newest").innerHTML = memberTable(members.slice(0, 8));
 }
 
@@ -343,8 +370,8 @@ function filtered() {
 function renderMembers() { const l = filtered(); $("#memCount").textContent = `${l.length} of ${members.length}`; $("#memTbl").innerHTML = memberTable(l).replace(/^<table class="tbl">|<\/table>$/g, ""); }
 ["#q", "#fStatus", "#fTeam"].forEach((s) => $(s).addEventListener("input", renderMembers));
 document.addEventListener("click", (e) => { const r = e.target.closest("tr.click"); if (r) openMember(r.dataset.id); });
-$("#csvMembers").onclick = () => csv(`snl-members-${ldn()}.csv`, [["First name", "Last name", "Email", "Phone", "Date of birth", "Address", "Postcode", "Team", "Status", "Wants membership", "WhatsApp community", "How heard", "Joined", "Last in", "Code"],
-  ...filtered().map((m) => [m.first_name, m.last_name, m.email, m.phone, m.date_of_birth, m.address, m.postcode, teamName(m.team_id), m.status, m.wants_membership ? "Yes" : "No", m.join_community ? "Yes" : "No", m.how_heard, m.created_at.slice(0, 10), lastSeen(m.id), m.member_code])]);
+$("#csvMembers").onclick = () => csv(`snl-members-${ldn()}.csv`, [["First name", "Last name", "Email", "Phone", "Birthday", "Address", "Postcode", "Team", "Status", "Wants membership", "WhatsApp community", "How heard", "Joined", "Last in", "Code"],
+  ...filtered().map((m) => [m.first_name, m.last_name, m.email, m.phone, SNL.dobText(m.date_of_birth), m.address, m.postcode, teamName(m.team_id), m.status, m.wants_membership ? "Yes" : "No", m.join_community ? "Yes" : "No", m.how_heard, m.created_at.slice(0, 10), lastSeen(m.id), m.member_code])]);
 
 // ===== BIRTHDAY CARDS =====
 let todaysBdays = [];
@@ -403,7 +430,7 @@ function openMember(id) {
         <div><label>Last name</label><input name="last_name" value="${esc(m.last_name)}"></div>
         <div><label>Email</label><input name="email" type="email" value="${esc(m.email)}"></div>
         <div><label>Phone</label><input name="phone" value="${esc(m.phone)}"></div>
-        <div><label>Date of birth</label><input name="date_of_birth" type="date" value="${esc(m.date_of_birth)}"></div>
+        <div><label>Birthday <span class="opt">(day and month)</span></label><div id="mDob"></div></div>
         <div><label>Postcode</label><input name="postcode" value="${esc(m.postcode)}"></div>
       </div>
       <label>Address</label><input name="address" value="${esc(m.address)}">
@@ -431,6 +458,7 @@ function openMember(id) {
     <p class="muted">${hist.length ? hist.slice(0, 30).map((d) => nice(d, { day: "numeric", month: "short", year: "2-digit" })).join(" · ") : "Not recorded yet."}</p>`;
   $("#modal").classList.remove("hidden");
   $("#mClose").onclick = closeModal;
+  SNL.dobFields($("#mDob"), m.date_of_birth, false);
   $("#mQr").onclick = () => $("#mQrBox").classList.toggle("hidden");
   $("#mCard").onclick = async () => {
     const box = $("#mCardBox"); box.classList.remove("hidden"); box.innerHTML = '<p class="muted">Making the card…</p>';
@@ -459,9 +487,15 @@ function openMember(id) {
   $("#mf").addEventListener("submit", async (e) => {
     e.preventDefault();
     const f = e.target, upd = {};
-    ["first_name", "last_name", "email", "phone", "date_of_birth", "postcode", "address", "status", "notes"].forEach((k) => upd[k] = f[k].value.trim() || null);
+    ["first_name", "last_name", "email", "phone", "postcode", "address", "status", "notes"].forEach((k) => upd[k] = f[k].value.trim() || null);
     upd.team_id = f.team_id.value ? +f.team_id.value : null;
     upd.birthday_share = f.birthday_share.checked;
+    const dob = SNL.dobValue($("#mDob"));
+    if (dob === null) { $("#mMsg").innerHTML = '<div class="msg err">Birthday needs both a day and a month.</div>'; return; }
+    // Keep any year already on record (the form no longer asks for one)
+    const oldYear = (m.date_of_birth || "").slice(0, 4);
+    const keep = oldYear && +oldYear !== SNL.NO_YEAR ? oldYear + dob.slice(4) : dob;
+    upd.date_of_birth = dob ? (!isNaN(Date.parse(keep + "T12:00:00Z")) && new Date(keep + "T12:00:00Z").toISOString().slice(0, 10) === keep ? keep : dob) : null;
     if (!upd.first_name || !upd.last_name) { $("#mMsg").innerHTML = '<div class="msg err">Name is required.</div>'; return; }
     upd.status = upd.status || "first_timer";
     const file = f.photo.files[0];
@@ -537,7 +571,7 @@ async function renderSettings() {
   $("#commLink").value = settings.community_link || "";
   $("#alertEmails").value = settings.admin_emails || "";
   $("#teamTbl").innerHTML = `<tr><th>Team</th><th>WhatsApp group link</th><th>Show on form</th></tr>` + teams.map((t) => `
-    <tr data-tid="${t.id}"><td><input class="tn" value="${esc(t.name)}"></td><td><input class="tl" value="${esc(t.whatsapp_link)}" placeholder="https://chat.whatsapp.com/…"></td><td><input class="ta" type="checkbox" ${t.active ? "checked" : ""} style="width:20px;height:20px;accent-color:var(--gold)"></td></tr>`).join("");
+    <tr data-tid="${t.id}"><td><input class="tn" value="${esc(t.name)}"></td><td><input class="tl" value="${esc(t.whatsapp_link)}" placeholder="https://chat.whatsapp.com/…"></td><td><input class="ta" type="checkbox" ${t.active ? "checked" : ""} ></td></tr>`).join("");
   const { data: staff } = await sb.from("staff").select("*").order("created_at");
   $("#staffTbl").innerHTML = `<tr><th>Name</th><th>Email</th><th>Role</th><th></th></tr>` + (staff || []).map((s) => `
     <tr><td>${esc(s.full_name)}</td><td>${esc(s.email)}</td><td>${s.role}</td><td>${s.user_id === me.id ? '<span class="muted">you</span>' : `<button class="btn danger small" data-rm="${s.user_id}">Remove</button>`}</td></tr>`).join("");
@@ -572,7 +606,7 @@ $("#saveBd").onclick = async () => {
 };
 $("#addTeam").onclick = () => {
   const tr = document.createElement("tr"); tr.dataset.tid = "new";
-  tr.innerHTML = `<td><input class="tn" placeholder="Team name"></td><td><input class="tl" placeholder="https://chat.whatsapp.com/…"></td><td><input class="ta" type="checkbox" checked style="width:20px;height:20px;accent-color:var(--gold)"></td>`;
+  tr.innerHTML = `<td><input class="tn" placeholder="Team name"></td><td><input class="tl" placeholder="https://chat.whatsapp.com/…"></td><td><input class="ta" type="checkbox" checked ></td>`;
   $("#teamTbl").appendChild(tr);
 };
 $("#saveLinks").onclick = async () => {

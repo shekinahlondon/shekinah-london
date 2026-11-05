@@ -1,20 +1,23 @@
 <!doctype html>
-<html lang="en">
+<html lang="en-GB">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Sunday Check-in · Shekinah Nation London</title>
-<meta name="theme-color" content="#0c0a09">
+<meta name="theme-color" content="#FAF9F6">
+<link rel="icon" href="logo.png">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <main class="wrap">
-  <div class="brand"><div class="mark">S</div><div><b>SHEKINAH NATION</b><small>London</small></div></div>
+  <div class="brand-hero"><a href="index.html" aria-label="Shekinah Nation London home"><img class="logo" src="logo.png" alt="Shekinah Nation" width="420" height="372"></a></div>
 
   <section id="checkView">
-    <p class="eyebrow">Sunday check-in</p>
-    <h1>Good to see you.</h1>
-    <p class="lead">Enter the phone number or email you registered with.</p>
+    <div class="page-head">
+      <p class="eyebrow">Sunday check-in</p>
+      <h1>Good to see you.</h1>
+      <p class="lead">Enter the phone number or email you registered with.</p>
+    </div>
     <form id="cf" class="card" novalidate>
       <label for="ident">Phone or email</label>
       <input id="ident" autocomplete="tel" inputmode="email" placeholder="07… or name@email.com">
@@ -26,20 +29,24 @@
       <button class="btn block" id="cbtn" style="margin-top:16px">Check me in</button>
     </form>
     <div class="card center">
-      <p style="margin:0 0 12px"><b>First time here?</b></p>
-      <a class="btn ghost" href="index.html">Fill the welcome form</a>
+      <h3 style="margin:0 0 4px">First time here?</h3>
+      <p class="muted" style="margin:0 0 14px;font-size:.92rem">We'd love to get to know you.</p>
+      <a class="btn ghost block" href="index.html">Fill the welcome form</a>
       <p class="muted" style="margin:16px 0 0;font-size:.9rem">Lost your QR code? <a href="#" id="toQr">Get it again</a></p>
     </div>
   </section>
 
   <section id="qrView" class="hidden">
-    <p class="eyebrow">Your QR code</p>
-    <h1>Get your check-in code</h1>
+    <div class="page-head">
+      <p class="eyebrow">Your QR code</p>
+      <h1>Get your check-in code</h1>
+      <p class="lead">Enter the email you registered with and your birthday.</p>
+    </div>
     <form id="qf" class="card" novalidate>
       <label for="qemail">Email you registered with</label>
       <input id="qemail" type="email" autocomplete="email">
-      <label for="qdob">Date of birth</label>
-      <input id="qdob" type="date">
+      <label>Your birthday <span class="opt">(day and month)</span></label>
+      <div id="qdob"></div>
       <div id="qmsg" class="msg err hidden" role="alert"></div>
       <button class="btn block" style="margin-top:16px">Show my QR code</button>
     </form>
@@ -47,11 +54,11 @@
       <h3 id="qrHi"></h3>
       <div class="qrbox"><img id="qrImg" alt="Your check-in QR code"></div>
       <div class="code" id="qrCode"></div>
-      <p style="margin-top:16px"><a class="btn ghost small" id="qrSave" download="shekinah-checkin-qr.png">Save QR to my phone</a></p>
+      <p style="margin-top:16px"><a class="btn ghost" id="qrSave" download="shekinah-checkin-qr.png">Save QR to my phone</a></p>
     </div>
     <p class="center"><a href="#" id="back">← Back to check-in</a></p>
   </section>
-  <footer>Shekinah Nation London</footer>
+  <footer>Shekinah Nation London · Registered charity 1206699</footer>
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="config.js"></script>
@@ -86,12 +93,13 @@ const show = (qr) => { $("#checkView").classList.toggle("hidden", qr); $("#qrVie
 $("#toQr").onclick = (e) => { e.preventDefault(); show(true); };
 $("#back").onclick = (e) => { e.preventDefault(); show(false); };
 if (location.hash === "#qr") show(true);
+SNL.dobFields($("#qdob"), "", false);
 
 $("#qf").addEventListener("submit", async (e) => {
   e.preventDefault();
   const m = $("#qmsg"); m.classList.add("hidden");
-  const email = $("#qemail").value.trim(), dob = $("#qdob").value;
-  if (!email || !dob) { msg(m, "Please enter your email and date of birth."); return; }
+  const email = $("#qemail").value.trim(), dob = SNL.dobValue($("#qdob"));
+  if (!email || !dob) { msg(m, "Please enter your email and choose your birthday (day and month)."); return; }
   const out = await rpc("my_qr", { p_email: email, p_dob: dob }).catch(() => ({}));
   if (!out.ok) { msg(m, "We couldn't match those details. Please see an usher on Sunday."); return; }
   const qr = qrcode(0, "M"); qr.addData(`SNL-${out.member_code}`); qr.make();
