@@ -1,0 +1,220 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Welcome · Shekinah Nation London</title>
+<meta name="description" content="First time at Shekinah Nation London? We'd love to know you.">
+<meta name="theme-color" content="#0c0a09">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wrap">
+  <div class="brand"><div class="mark">S</div><div><b>SHEKINAH NATION</b><small>London</small></div></div>
+
+  <!-- ============ FORM ============ -->
+  <section id="formView">
+    <p class="eyebrow">Welcome home</p>
+    <h1>We're so glad you came.</h1>
+    <p class="lead">Tell us a little about yourself so we can stay in touch, celebrate you, and help you find your place in the family.</p>
+
+    <form id="f" novalidate>
+      <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+
+      <div class="card">
+        <div class="section-title"><span class="num">01</span><h3>About you</h3></div>
+        <div class="row">
+          <div><label for="first_name">First name</label><input id="first_name" name="first_name" autocomplete="given-name" required></div>
+          <div><label for="last_name">Last name</label><input id="last_name" name="last_name" autocomplete="family-name" required></div>
+        </div>
+        <div class="row">
+          <div><label for="email">Email</label><input id="email" name="email" type="email" autocomplete="email" inputmode="email"></div>
+          <div><label for="phone">Phone (WhatsApp)</label><input id="phone" name="phone" type="tel" autocomplete="tel" inputmode="tel" placeholder="07…"></div>
+        </div>
+        <label for="date_of_birth">Date of birth <span class="opt">— so we can celebrate you</span></label>
+        <input id="date_of_birth" name="date_of_birth" type="date" max="">
+        <label for="address">Address <span class="opt">(optional)</span></label>
+        <input id="address" name="address" autocomplete="street-address">
+        <div class="row">
+          <div><label for="postcode">Postcode <span class="opt">(optional)</span></label><input id="postcode" name="postcode" autocomplete="postal-code"></div>
+          <div><label for="how_heard">How did you hear about us? <span class="opt">(optional)</span></label>
+            <select id="how_heard" name="how_heard">
+              <option value="">Choose…</option><option>A friend or family member</option><option>Instagram</option><option>Facebook</option><option>TikTok / YouTube</option><option>Walked past / saw a flyer</option><option>Shekinah Nation Leicester</option><option>Other</option>
+            </select></div>
+        </div>
+        <label for="photo">Your photo <span class="opt">(optional — helps our team recognise and welcome you)</span></label>
+        <input id="photo" name="photo_input" type="file" accept="image/*">
+      </div>
+
+      <div class="card">
+        <div class="section-title"><span class="num">02</span><h3>Family</h3></div>
+        <label>Would you like to become part of Shekinah Nation?</label>
+        <div class="choice">
+          <input type="radio" id="wm_y" name="wants_membership" value="yes"><label for="wm_y">Yes, I'd love to</label>
+          <input type="radio" id="wm_n" name="wants_membership" value="no"><label for="wm_n">Not right now</label>
+        </div>
+
+        <div id="teamWrap" class="hidden">
+          <label>Which team would you like to serve in? <span class="opt">(optional)</span></label>
+          <div class="teams" id="teams"><span class="muted">Loading teams…</span></div>
+        </div>
+
+        <label style="margin-top:22px">Would you like to join our WhatsApp community?</label>
+        <div class="choice">
+          <input type="radio" id="jc_y" name="join_community" value="yes"><label for="jc_y">Yes, add me</label>
+          <input type="radio" id="jc_n" name="join_community" value="no"><label for="jc_n">No, thanks</label>
+        </div>
+        <p id="teamNote" class="muted hidden" style="font-size:.88rem;margin-top:10px">Team groups live inside the WhatsApp community, so you'll join the community first and then your team.</p>
+      </div>
+
+      <div class="card">
+        <div class="section-title"><span class="num">03</span><h3>Anything we can pray about?</h3></div>
+        <textarea name="prayer_request" id="prayer_request" placeholder="Optional — only our pastoral team will see this."></textarea>
+        <label class="check" style="margin-top:18px"><input type="checkbox" id="birthday_share" name="birthday_share" value="yes">
+          <span>🎂 Yes, celebrate my birthday in the church WhatsApp community with a birthday card (with my photo, if I've added one).</span></label>
+        <label class="check" style="margin-top:12px"><input type="checkbox" id="consent" name="consent" value="yes">
+          <span>I agree that Shekinah Nation (registered charity 1206699) may store these details to keep in touch with me, record my attendance and celebrate my birthday. My details are only seen by the church admin team and I can ask for them to be updated or deleted at any time.</span></label>
+      </div>
+
+      <div id="err" class="msg err hidden" role="alert"></div>
+      <button class="btn block" id="submit" type="submit">Submit</button>
+    </form>
+  </section>
+
+  <!-- ============ DONE ============ -->
+  <section id="doneView" class="hidden">
+    <p class="eyebrow">You're in</p>
+    <h1 id="doneTitle">Welcome to the family.</h1>
+    <p class="lead" id="doneLead">Thank you for filling this in. We can't wait to get to know you.</p>
+
+    <div class="card" id="waCard">
+      <h3>Join us on WhatsApp</h3>
+      <div class="steps" id="steps"></div>
+    </div>
+
+    <div class="card center">
+      <h3>Your check-in QR code</h3>
+      <p class="muted" style="margin:0">Show this to an usher when you arrive on Sunday. Screenshot it or save it to your phone.</p>
+      <div class="qrbox"><img id="qrImg" alt="Your check-in QR code"></div>
+      <div class="code" id="qrCode"></div>
+      <p style="margin-top:16px"><a class="btn ghost small" id="qrSave" download="shekinah-checkin-qr.png">Save QR to my phone</a></p>
+      <p class="muted" id="emailNote" style="font-size:.86rem"></p>
+    </div>
+  </section>
+
+  <footer>Shekinah Nation London · Registered charity 1206699</footer>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="config.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+$("#date_of_birth").max = new Date().toISOString().slice(0, 10);
+
+// Teams
+fetch(`${SNL.SUPABASE_URL}/rest/v1/teams?select=id,name&active=eq.true&order=sort_order`, {
+  headers: { apikey: SNL.SUPABASE_KEY },
+}).then((r) => r.json()).then((teams) => {
+  $("#teams").innerHTML = teams.map((t) =>
+    `<input type="radio" name="team_id" id="t${t.id}" value="${t.id}"><label for="t${t.id}">${esc(t.name)}</label>`).join("")
+    + `<input type="radio" name="team_id" id="t0" value=""><label for="t0">Not sure yet</label>`;
+}).catch(() => { $("#teams").innerHTML = '<span class="muted">Teams couldn\'t load — you can still submit.</span>'; });
+
+const val = (n) => (document.querySelector(`input[name="${n}"]:checked`) || {}).value || "";
+function sync() {
+  const member = val("wants_membership") === "yes";
+  $("#teamWrap").classList.toggle("hidden", !member);
+  $("#teamNote").classList.toggle("hidden", !(member && val("team_id")));
+}
+document.addEventListener("change", sync);
+
+// Shrink large photos before upload
+async function shrink(file) {
+  if (!file) return null;
+  try {
+    const bmp = await createImageBitmap(file);
+    const max = 1200, scale = Math.min(1, max / Math.max(bmp.width, bmp.height));
+    const c = document.createElement("canvas");
+    c.width = Math.round(bmp.width * scale); c.height = Math.round(bmp.height * scale);
+    c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+    const blob = await new Promise((res) => c.toBlob(res, "image/jpeg", 0.85));
+    return blob ? new File([blob], "photo.jpg", { type: "image/jpeg" }) : file;
+  } catch { return file.size <= 5 * 1024 * 1024 ? file : null; }
+}
+
+function showErr(m) { const e = $("#err"); e.textContent = m; e.classList.remove("hidden"); e.scrollIntoView({ behavior: "smooth", block: "center" }); }
+
+$("#f").addEventListener("submit", async (ev) => {
+  ev.preventDefault();
+  $("#err").classList.add("hidden");
+  const f = ev.target;
+  if (!f.first_name.value.trim() || !f.last_name.value.trim()) return showErr("Please enter your first and last name.");
+  if (!f.email.value.trim() && !f.phone.value.trim()) return showErr("Please give us your email or phone number so we can stay in touch.");
+  if (f.email.value && !f.email.checkValidity()) return showErr("That email address doesn't look quite right.");
+  if (!val("wants_membership")) return showErr("Please let us know if you'd like to become part of Shekinah Nation.");
+  if (!val("join_community")) return showErr("Please let us know if you'd like to join the WhatsApp community.");
+  if (!$("#consent").checked) return showErr("Please tick the consent box so we can keep your details.");
+
+  const btn = $("#submit"); btn.disabled = true; btn.textContent = "Submitting…";
+  try {
+    const fd = new FormData(f);
+    fd.delete("photo_input");
+    if (val("wants_membership") !== "yes") fd.delete("team_id");
+    const photo = await shrink($("#photo").files[0]);
+    if (photo) fd.append("photo", photo);
+    const r = await fetch(`${SNL.SUPABASE_URL}/functions/v1/register`, {
+      method: "POST", body: fd, headers: { apikey: SNL.SUPABASE_KEY },
+    });
+    const out = await r.json();
+    if (!out.ok) throw new Error(out.error || "Something went wrong.");
+    done(out, !!f.email.value.trim());
+  } catch (e) {
+    showErr(e.message || "Something went wrong. Please try again.");
+    btn.disabled = false; btn.textContent = "Submit";
+  }
+});
+
+function done(out, hasEmail) {
+  $("#formView").classList.add("hidden");
+  $("#doneView").classList.remove("hidden");
+  window.scrollTo(0, 0);
+  $("#doneTitle").textContent = `Welcome to the family, ${out.first_name}.`;
+
+  // QR
+  const qr = qrcode(0, "M"); qr.addData(`SNL-${out.member_code}`); qr.make();
+  const url = qr.createDataURL(10, 2);
+  $("#qrImg").src = url; $("#qrSave").href = url; $("#qrCode").textContent = out.member_code;
+  $("#emailNote").textContent = hasEmail ? "We've also emailed it to you." : "Lost it? You can get it again from the check-in page.";
+
+  // WhatsApp steps
+  const steps = [];
+  if (out.community_link) {
+    steps.push({ title: "Join the Shekinah Nation London community", link: out.community_link });
+    if (out.team_link) steps.push({ title: `Then join the ${out.team_name} team group`, link: out.team_link });
+    else if (out.team_name) steps.push({ title: `${out.team_name} team`, note: "Your team lead will add you to the group shortly." });
+  }
+  if (!steps.length) {
+    $("#waCard").classList.add("hidden");
+    if (out.team_name) $("#doneLead").textContent = `Thank you! Someone from the ${out.team_name} team will be in touch.`;
+    return;
+  }
+  const box = $("#steps");
+  box.innerHTML = steps.map((s, i) => `
+    <div class="step ${i ? "locked" : ""}" data-i="${i}">
+      <div class="n">${i + 1}</div>
+      <div class="grow"><b>${esc(s.title)}</b>${s.note ? `<div class="muted" style="font-size:.88rem">${esc(s.note)}</div>` : ""}</div>
+      ${s.link ? `<a class="btn wa small" href="${esc(s.link)}" target="_blank" rel="noopener" data-go="${i}">Join</a>` : ""}
+    </div>`).join("");
+  box.addEventListener("click", (e) => {
+    const a = e.target.closest("[data-go]"); if (!a) return;
+    const i = +a.dataset.go, step = box.querySelector(`.step[data-i="${i}"]`);
+    if (step.classList.contains("locked")) { e.preventDefault(); return; }
+    step.classList.add("done"); step.querySelector(".n").textContent = "✓";
+    const next = box.querySelector(`.step[data-i="${i + 1}"]`);
+    if (next) next.classList.remove("locked");
+  });
+}
+</script>
+</body>
+</html>

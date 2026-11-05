@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sunday Check-in · Shekinah Nation London</title>
+<meta name="theme-color" content="#0c0a09">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wrap">
+  <div class="brand"><div class="mark">S</div><div><b>SHEKINAH NATION</b><small>London</small></div></div>
+
+  <section id="checkView">
+    <p class="eyebrow">Sunday check-in</p>
+    <h1>Good to see you.</h1>
+    <p class="lead">Enter the phone number or email you registered with.</p>
+    <form id="cf" class="card" novalidate>
+      <label for="ident">Phone or email</label>
+      <input id="ident" autocomplete="tel" inputmode="email" placeholder="07… or name@email.com">
+      <div id="nameWrap" class="hidden">
+        <label for="fname">More than one person uses this. What's your first name?</label>
+        <input id="fname" autocomplete="given-name">
+      </div>
+      <div id="cmsg" class="msg hidden" role="status"></div>
+      <button class="btn block" id="cbtn" style="margin-top:16px">Check me in</button>
+    </form>
+    <div class="card center">
+      <p style="margin:0 0 12px"><b>First time here?</b></p>
+      <a class="btn ghost" href="index.html">Fill the welcome form</a>
+      <p class="muted" style="margin:16px 0 0;font-size:.9rem">Lost your QR code? <a href="#" id="toQr">Get it again</a></p>
+    </div>
+  </section>
+
+  <section id="qrView" class="hidden">
+    <p class="eyebrow">Your QR code</p>
+    <h1>Get your check-in code</h1>
+    <form id="qf" class="card" novalidate>
+      <label for="qemail">Email you registered with</label>
+      <input id="qemail" type="email" autocomplete="email">
+      <label for="qdob">Date of birth</label>
+      <input id="qdob" type="date">
+      <div id="qmsg" class="msg err hidden" role="alert"></div>
+      <button class="btn block" style="margin-top:16px">Show my QR code</button>
+    </form>
+    <div id="qrOut" class="card center hidden">
+      <h3 id="qrHi"></h3>
+      <div class="qrbox"><img id="qrImg" alt="Your check-in QR code"></div>
+      <div class="code" id="qrCode"></div>
+      <p style="margin-top:16px"><a class="btn ghost small" id="qrSave" download="shekinah-checkin-qr.png">Save QR to my phone</a></p>
+    </div>
+    <p class="center"><a href="#" id="back">← Back to check-in</a></p>
+  </section>
+  <footer>Shekinah Nation London</footer>
+</main>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="config.js"></script>
+<script>
+const $ = (s) => document.querySelector(s);
+const rpc = (fn, body) => fetch(`${SNL.SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+  method: "POST", headers: { apikey: SNL.SUPABASE_KEY, "Content-Type": "application/json" }, body: JSON.stringify(body),
+}).then((r) => r.json());
+function msg(el, text, ok) { el.textContent = text; el.className = "msg " + (ok ? "ok" : "err"); }
+
+$("#cf").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const m = $("#cmsg"), b = $("#cbtn"), id = $("#ident").value.trim();
+  if (!id) return msg(m, "Please enter your phone number or email.");
+  b.disabled = true;
+  try {
+    const out = await rpc("door_checkin", { p_identifier: id, p_first_name: $("#fname").value.trim() || null });
+    if (out.ok) {
+      msg(m, out.already ? `You're already checked in today, ${out.first_name}. Enjoy the service!` : `Welcome, ${out.first_name}! You're checked in. Enjoy the service.`, true);
+      $("#ident").value = ""; $("#fname").value = ""; $("#nameWrap").classList.add("hidden");
+    } else if (out.reason === "multiple") {
+      $("#nameWrap").classList.remove("hidden"); $("#fname").focus();
+      msg(m, "Please add your first name.");
+    } else {
+      msg(m, "We couldn't find you. If this is your first time, please fill the welcome form below.");
+    }
+  } catch { msg(m, "Connection problem — please try again or see an usher."); }
+  b.disabled = false;
+});
+
+const show = (qr) => { $("#checkView").classList.toggle("hidden", qr); $("#qrView").classList.toggle("hidden", !qr); };
+$("#toQr").onclick = (e) => { e.preventDefault(); show(true); };
+$("#back").onclick = (e) => { e.preventDefault(); show(false); };
+if (location.hash === "#qr") show(true);
+
+$("#qf").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const m = $("#qmsg"); m.classList.add("hidden");
+  const email = $("#qemail").value.trim(), dob = $("#qdob").value;
+  if (!email || !dob) { msg(m, "Please enter your email and date of birth."); return; }
+  const out = await rpc("my_qr", { p_email: email, p_dob: dob }).catch(() => ({}));
+  if (!out.ok) { msg(m, "We couldn't match those details. Please see an usher on Sunday."); return; }
+  const qr = qrcode(0, "M"); qr.addData(`SNL-${out.member_code}`); qr.make();
+  const url = qr.createDataURL(10, 2);
+  $("#qrImg").src = url; $("#qrSave").href = url; $("#qrCode").textContent = out.member_code;
+  $("#qrHi").textContent = `Here you go, ${out.first_name}`;
+  $("#qrOut").classList.remove("hidden");
+});
+</script>
+</body>
+</html>

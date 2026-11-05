@@ -1,0 +1,615 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin · Shekinah Nation London</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0c0a09">
+<link rel="stylesheet" href="style.css">
+<style>
+  .top { position: sticky; top: 0; z-index: 5; background: rgba(12,10,9,.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+  .top .in { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+  .top .brand { margin: 0; }
+  .tabs { display: flex; gap: 4px; overflow-x: auto; flex: 1; scrollbar-width: none; }
+  .tabs button { background: none; border: 0; color: var(--muted); font: 500 .95rem "DM Sans"; padding: 9px 12px; border-radius: 999px; cursor: pointer; white-space: nowrap; }
+  .tabs button.on { background: #2a1f12; color: var(--gold2); }
+  .who { color: var(--muted); font-size: .82rem; display: flex; gap: 10px; align-items: center; }
+  .grid4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); padding: 18px; }
+  .stat .v { font-family: "Cormorant Garamond", serif; font-size: 2.4rem; line-height: 1; color: var(--gold2); }
+  .stat .l { color: var(--muted); font-size: .85rem; margin-top: 6px; }
+  .bday { background: linear-gradient(90deg, #3a2610, #1b1612); border: 1px solid #6b4a1c; border-radius: var(--radius); padding: 16px 18px; margin-bottom: 18px; }
+  .bday ul { margin: 8px 0 0; padding-left: 18px; }
+  .bdgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 16px; margin-top: 12px; }
+  .bdcard { background: rgba(0,0,0,.25); border-radius: 12px; padding: 12px; }
+  .bdimg { aspect-ratio: 1007 / 1280; background: #120e0b; border-radius: 10px; display: grid; place-items: center; overflow: hidden; margin-bottom: 8px; text-align: center; padding: 6px; }
+  .bdimg img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .tbl { width: 100%; border-collapse: collapse; font-size: .92rem; }
+  .tbl th { text-align: left; color: var(--muted); font-weight: 500; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; padding: 10px 8px; border-bottom: 1px solid var(--line); }
+  .tbl td { padding: 10px 8px; border-bottom: 1px solid #221c17; vertical-align: middle; }
+  .tbl tr.click { cursor: pointer; }
+  .tbl tr.click:hover td { background: #17120e; }
+  .scroll { overflow-x: auto; }
+  .av { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: #2a2119; display: inline-grid; place-items: center; color: var(--gold2); font-size: .85rem; vertical-align: middle; }
+  .pill { display: inline-block; padding: 2px 10px; border-radius: 999px; font-size: .78rem; border: 1px solid var(--line); color: var(--muted); }
+  .pill.member { border-color: #6b4a1c; color: var(--gold2); }
+  .pill.first_timer { border-color: #24503a; color: #b5e6c6; }
+  .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+  .toolbar input, .toolbar select { width: auto; flex: 1 1 180px; padding: 10px 12px; }
+  .modal { position: fixed; inset: 0; background: rgba(0,0,0,.7); display: grid; place-items: center; z-index: 20; padding: 16px; }
+  .modal .box { background: var(--bg2); border: 1px solid var(--line); border-radius: var(--radius); width: min(720px, 100%); max-height: 92vh; overflow: auto; padding: 22px; }
+  .bigav { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; background: #2a2119; display: grid; place-items: center; font-size: 2rem; color: var(--gold2); font-family: "Cormorant Garamond", serif; }
+  #reader { width: 100%; max-width: 420px; margin: 0 auto; border-radius: 14px; overflow: hidden; background: #000; }
+  .scanres { max-width: 420px; margin: 16px auto; text-align: center; border-radius: var(--radius); padding: 18px; border: 1px solid var(--line); }
+  .scanres.ok { border-color: #24503a; background: #102017; }
+  .scanres.warn { border-color: #6b4a1c; background: #2a1f12; }
+  .scanres.bad { border-color: #5a2a24; background: #2a1210; }
+  .scanres img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; }
+  .bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; margin-top: 10px; }
+  .bars div { flex: 1; background: linear-gradient(180deg, var(--gold2), var(--gold)); border-radius: 6px 6px 0 0; position: relative; min-height: 2px; }
+  .bars span { position: absolute; top: -20px; left: 0; right: 0; text-align: center; font-size: .78rem; color: var(--text); }
+  .barl { display: flex; gap: 8px; } .barl div { flex: 1; text-align: center; font-size: .72rem; color: var(--muted); }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; } @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
+  .linkbox { display: flex; gap: 8px; } .linkbox input { flex: 1; font-size: .82rem; }
+  @media print { body * { visibility: hidden; } #poster, #poster * { visibility: visible; } #poster { position: absolute; inset: 0; background: #fff; color: #000; } }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<main class="wrap" id="loginView">
+  <div class="brand"><div class="mark">S</div><div><b>SHEKINAH NATION</b><small>London · Team access</small></div></div>
+  <h1>Sign in</h1>
+  <form id="lf" class="card" novalidate>
+    <label for="lem">Email</label><input id="lem" type="email" autocomplete="username">
+    <label for="lpw">Password</label><input id="lpw" type="password" autocomplete="current-password">
+    <div id="lmsg" class="msg err hidden"></div>
+    <button class="btn block" style="margin-top:16px">Sign in</button>
+  </form>
+  <p class="muted center" style="font-size:.88rem">Forgotten your password? Ask an admin for a new setup link.</p>
+</main>
+
+<!-- ===== APP ===== -->
+<div id="appView" class="hidden">
+  <div class="top"><div class="in">
+    <div class="brand"><div class="mark">S</div><div><b>SNL</b><small>Members</small></div></div>
+    <nav class="tabs" id="tabs"></nav>
+    <div class="who"><span id="whoName"></span><button class="btn ghost small" id="logout">Sign out</button></div>
+  </div></div>
+
+  <main class="wrap wide">
+    <!-- HOME -->
+    <section data-tab="home">
+      <div id="bdayBanner"></div>
+      <div class="grid4" id="stats"></div>
+      <div class="two">
+        <div class="card"><h3>Attendance · last 8 Sundays</h3><div id="trend"></div></div>
+        <div class="card"><h3>Upcoming birthdays</h3><div id="upcoming" class="muted">—</div></div>
+      </div>
+      <div class="card"><h3>Newest sign-ups</h3><div class="scroll" id="newest"></div></div>
+    </section>
+
+    <!-- SCAN -->
+    <section data-tab="scan" class="hidden">
+      <h2 class="center">Scan member QR</h2>
+      <p class="muted center">Point the camera at a member's QR code. Each person is counted once per day.</p>
+      <div id="reader"></div>
+      <p class="center" style="margin-top:14px"><button class="btn" id="camBtn">Start camera</button></p>
+      <div id="scanRes"></div>
+      <form id="codeForm" class="card" style="max-width:420px;margin:18px auto" novalidate>
+        <label for="codeIn">No QR? Type their 8-character code</label>
+        <div class="linkbox"><input id="codeIn" autocapitalize="characters" maxlength="12"><button class="btn small">Check in</button></div>
+      </form>
+      <p class="center muted" id="scanCount"></p>
+    </section>
+
+    <!-- MEMBERS -->
+    <section data-tab="members" class="hidden">
+      <div class="toolbar">
+        <input id="q" placeholder="Search name, phone, email, postcode…">
+        <select id="fStatus"><option value="">All statuses</option><option value="first_timer">First-timers</option><option value="member">Members</option><option value="inactive">Inactive</option></select>
+        <select id="fTeam"><option value="">All teams</option></select>
+        <button class="btn ghost small" id="csvMembers">Export CSV</button>
+        <a class="btn small" href="index.html" target="_blank">+ Add via form</a>
+      </div>
+      <p class="muted" id="memCount"></p>
+      <div class="scroll"><table class="tbl" id="memTbl"></table></div>
+    </section>
+
+    <!-- ATTENDANCE -->
+    <section data-tab="attendance" class="hidden">
+      <div class="toolbar">
+        <label for="attDate" style="margin:0">Service date</label>
+        <input id="attDate" type="date" style="flex:0 1 200px">
+        <button class="btn ghost small" id="csvAtt">Export CSV</button>
+      </div>
+      <div class="grid4" id="attStats"></div>
+      <div class="two">
+        <div class="card"><h3>Present</h3><div class="scroll" id="present"></div></div>
+        <div class="card"><h3>Not in <span class="muted" style="font-size:.9rem">— worth a check-in call</span></h3><div class="scroll" id="absent"></div></div>
+      </div>
+    </section>
+
+    <!-- SETTINGS -->
+    <section data-tab="settings" class="hidden">
+      <div class="card">
+        <h3>WhatsApp links</h3>
+        <label for="commLink">Community invite link</label>
+        <input id="commLink">
+        <div class="scroll"><table class="tbl" id="teamTbl" style="margin-top:14px"></table></div>
+        <p style="margin-top:12px"><button class="btn ghost small" id="addTeam">+ Add team</button> <button class="btn small" id="saveLinks">Save links</button></p>
+        <div id="linkMsg"></div>
+      </div>
+      <div class="card">
+        <h3>Birthday & first-timer alerts</h3>
+        <label for="alertEmails">Send to (comma-separated emails)</label>
+        <input id="alertEmails">
+        <p class="muted" style="font-size:.85rem">The birthday digest goes out every morning around 8am. Note: until a domain is verified in Resend, emails only reach the Resend account owner's address.</p>
+        <button class="btn small" id="saveAlerts">Save</button> <span id="alertMsg"></span>
+      </div>
+      <div class="card">
+        <h3>Birthday card & messages</h3>
+        <label for="bdMsg">Message printed on the card</label>
+        <textarea id="bdMsg" maxlength="160"></textarea>
+        <label for="bdCap">WhatsApp caption <span class="opt">— {name} becomes their first name</span></label>
+        <textarea id="bdCap"></textarea>
+        <label for="logoUp">Logo on the card <span class="opt">(PNG with a transparent background, black logo)</span></label>
+        <input id="logoUp" type="file" accept="image/png">
+        <h3 style="margin-top:22px">Birthday text message to the celebrant</h3>
+        <label class="check"><input type="checkbox" id="smsOn"><span>Send a text message on their birthday morning (sent through Twilio, about 4p per text)</span></label>
+        <div class="row">
+          <div><label for="smsFrom">Sender name <span class="opt">(max 11 letters, no spaces)</span></label><input id="smsFrom" maxlength="11"></div>
+        </div>
+        <label for="smsText">Text <span class="opt">— {name} becomes their first name</span></label>
+        <textarea id="smsText"></textarea>
+        <p class="muted" style="font-size:.85rem" id="smsCount"></p>
+        <button class="btn small" id="saveBd">Save</button> <span id="bdMsgOut"></span>
+      </div>
+      <div class="card">
+        <h3>Team access</h3>
+        <div class="scroll"><table class="tbl" id="staffTbl"></table></div>
+        <h3 style="margin-top:20px">Invite someone</h3>
+        <div class="row">
+          <div><label for="invEmail">Email</label><input id="invEmail" type="email"></div>
+          <div><label for="invName">Name</label><input id="invName"></div>
+        </div>
+        <label for="invRole">Role</label>
+        <select id="invRole"><option value="usher">Usher — can scan QR codes only</option><option value="admin">Admin — full access to member data</option></select>
+        <p style="margin-top:12px"><button class="btn small" id="invBtn">Create setup link</button></p>
+        <div id="invOut"></div>
+      </div>
+      <div class="card">
+        <h3>Door poster</h3>
+        <p class="muted">Print this and put it at the cinema entrance. Members without their QR can scan it and check in with their phone number. First-timers get a link to the welcome form.</p>
+        <button class="btn small" onclick="window.print()">Print poster</button>
+        <div id="poster" style="background:#fff;color:#111;border-radius:14px;padding:30px;margin-top:16px;text-align:center">
+          <div style="font:600 13px DM Sans;letter-spacing:.3em">SHEKINAH NATION LONDON</div>
+          <div style="font:600 46px 'Cormorant Garamond';margin:10px 0 4px">Welcome home.</div>
+          <div style="font:16px DM Sans;margin-bottom:20px">Scan to check in — or fill the welcome form if it's your first time.</div>
+          <div style="display:flex;gap:30px;justify-content:center;flex-wrap:wrap">
+            <div><img id="posterQr1" style="width:220px"><div style="font:600 16px DM Sans">Check in</div></div>
+            <div><img id="posterQr2" style="width:220px"><div style="font:600 16px DM Sans">First time here?</div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div id="modal" class="modal hidden"><div class="box" id="modalBox"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script src="config.js"></script>
+<script>
+const sb = supabase.createClient(SNL.SUPABASE_URL, SNL.SUPABASE_KEY);
+const $ = (s) => document.querySelector(s);
+const esc = (s) => String(s ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+const ldn = (d = new Date()) => new Intl.DateTimeFormat("en-CA", { timeZone: "Europe/London" }).format(d);
+const nice = (iso, opts = { day: "numeric", month: "short", year: "numeric" }) => iso ? new Date(iso + (iso.length === 10 ? "T12:00:00" : "")).toLocaleDateString("en-GB", opts) : "";
+const initials = (m) => ((m.first_name || "")[0] || "") + ((m.last_name || "")[0] || "");
+function lastSunday() { const d = new Date(ldn() + "T12:00:00"); d.setDate(d.getDate() - d.getDay()); return ldn(d); }
+function addDays(iso, n) { const d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() + n); return ldn(d); }
+function csv(name, rows) {
+  const body = rows.map((r) => r.map((v) => `"${String(v ?? "").replace(/"/g, '""')}"`).join(",")).join("\r\n");
+  const a = document.createElement("a"); a.href = URL.createObjectURL(new Blob(["﻿" + body], { type: "text/csv" }));
+  a.download = name; a.click();
+}
+const qrUrl = (text) => { const q = qrcode(0, "M"); q.addData(text); q.make(); return q.createDataURL(8, 2); };
+
+let role = null, me = null, members = [], teams = [], attendance = [], photoUrls = {}, settings = {};
+
+// ===== AUTH =====
+$("#lf").addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const { error } = await sb.auth.signInWithPassword({ email: $("#lem").value.trim(), password: $("#lpw").value });
+  if (error) { $("#lmsg").textContent = "Email or password is incorrect."; $("#lmsg").classList.remove("hidden"); return; }
+  boot();
+});
+$("#logout").onclick = async () => { await sb.auth.signOut(); location.reload(); };
+
+async function boot() {
+  const { data: { session } } = await sb.auth.getSession();
+  if (!session) return;
+  const { data: r } = await sb.rpc("my_role");
+  if (!r) { $("#lmsg").textContent = "This account doesn't have access. Ask an admin to invite you."; $("#lmsg").classList.remove("hidden"); await sb.auth.signOut(); return; }
+  role = r; me = session.user;
+  $("#loginView").classList.add("hidden"); $("#appView").classList.remove("hidden");
+  $("#whoName").textContent = `${me.email} · ${role}`;
+  const tabs = role === "admin" ? [["home", "Home"], ["scan", "Scan"], ["members", "Members"], ["attendance", "Attendance"], ["settings", "Settings"]] : [["scan", "Scan"]];
+  $("#tabs").innerHTML = tabs.map(([k, l]) => `<button data-k="${k}">${l}</button>`).join("");
+  $("#tabs").onclick = (e) => { const b = e.target.closest("button"); if (b) go(b.dataset.k); };
+  if (role === "admin") {
+    await loadAll();
+    // Remember the site address so birthday emails can link back to the dashboard
+    if (location.protocol === "https:" && settings.site_url !== SNL.base()) {
+      sb.from("settings").upsert({ key: "site_url", value: SNL.base() }).then(() => (settings.site_url = SNL.base()));
+    }
+  }
+  go(location.hash.slice(1) && tabs.some((t) => t[0] === location.hash.slice(1)) ? location.hash.slice(1) : tabs[0][0]);
+}
+
+function go(k) {
+  document.querySelectorAll("[data-tab]").forEach((s) => s.classList.toggle("hidden", s.dataset.tab !== k));
+  document.querySelectorAll("#tabs button").forEach((b) => b.classList.toggle("on", b.dataset.k === k));
+  history.replaceState(null, "", "#" + k);
+  if (k !== "scan") stopCam();
+  ({ home: renderHome, members: renderMembers, attendance: renderAttendance, settings: renderSettings }[k] || (() => {}))();
+}
+
+async function loadAll() {
+  const since = addDays(ldn(), -400);
+  const [m, t, a, s] = await Promise.all([
+    sb.from("members").select("*").order("created_at", { ascending: false }),
+    sb.from("teams").select("*").order("sort_order"),
+    sb.from("attendance").select("member_id,service_date,checked_in_at,method").gte("service_date", since).order("checked_in_at"),
+    sb.from("settings").select("*"),
+  ]);
+  members = m.data || []; teams = t.data || []; attendance = a.data || [];
+  settings = Object.fromEntries((s.data || []).map((r) => [r.key, r.value]));
+  const paths = members.map((x) => x.photo_path).filter((p) => p && !photoUrls[p]);
+  for (let i = 0; i < paths.length; i += 100) {
+    const { data } = await sb.storage.from("member-photos").createSignedUrls(paths.slice(i, i + 100), 3600 * 6);
+    (data || []).forEach((d) => { if (d.signedUrl) photoUrls[d.path] = d.signedUrl; });
+  }
+  $("#fTeam").innerHTML = '<option value="">All teams</option>' + teams.map((x) => `<option value="${x.id}">${esc(x.name)}</option>`).join("");
+}
+const teamName = (id) => (teams.find((t) => t.id === id) || {}).name || "";
+const av = (m, cls = "av") => m.photo_path && photoUrls[m.photo_path] ? `<img class="${cls}" src="${photoUrls[m.photo_path]}" alt="">` : `<span class="${cls}">${esc(initials(m))}</span>`;
+const lastSeen = (id) => { let l = ""; for (const a of attendance) if (a.member_id === id && a.service_date > l) l = a.service_date; return l; };
+
+// ===== HOME =====
+function nextBirthday(dob) {
+  const today = ldn(), y = +today.slice(0, 4);
+  let d = `${y}${dob.slice(4)}`; if (d < today) d = `${y + 1}${dob.slice(4)}`;
+  return d;
+}
+async function renderHome() {
+  const { data: bd } = await sb.rpc("todays_birthdays");
+  todaysBdays = bd || [];
+  $("#bdayBanner").innerHTML = todaysBdays.length ? `<div class="bday"><b>🎂 Birthday${todaysBdays.length > 1 ? "s" : ""} today</b>
+    <div class="bdgrid">${todaysBdays.map((b, i) => `
+      <div class="bdcard">
+        <div id="bdimg${i}" class="bdimg">${b.birthday_share ? '<span class="muted">Loading card…</span>' : '<span class="muted" style="font-size:.85rem">No public post: they haven\'t opted in</span>'}</div>
+        <div><b>${esc(b.first_name)} ${esc(b.last_name)}</b>${b.turning > 0 && b.turning < 120 ? ` · turning ${b.turning}` : ""}</div>
+        <div class="muted" style="font-size:.82rem">${b.sms_status ? `Text message: ${esc(b.sms_status)}` : ""}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+          ${b.birthday_share ? `<button class="btn small wa" data-share="${i}">Share to WhatsApp</button>` : ""}
+          ${b.phone ? `<a class="btn ghost small" href="https://wa.me/${esc(waNum(b.phone))}?text=${encodeURIComponent(fillName(settings.birthday_caption || "Happy birthday, {name}!", b.first_name))}" target="_blank">Message them</a>` : ""}
+        </div>
+      </div>`).join("")}</div></div>` : "";
+  todaysBdays.forEach(async (b, i) => {
+    if (!b.birthday_share) return;
+    try {
+      const path = b.card_path || (await makeCard(b.id)).path;
+      b.card_path = path;
+      const { data } = await sb.storage.from("cards").createSignedUrl(path, 3600);
+      $(`#bdimg${i}`).innerHTML = `<img src="${data.signedUrl}" alt="Birthday card for ${esc(b.first_name)}">`;
+    } catch (e) { $(`#bdimg${i}`).innerHTML = `<span class="muted">Card couldn't be made: ${esc(e.message)}</span>`; }
+  });
+  const today = ldn(), sun = lastSunday(), month = today.slice(0, 7);
+  const active = members.filter((m) => m.status !== "inactive");
+  const count = (d) => new Set(attendance.filter((a) => a.service_date === d).map((a) => a.member_id)).size;
+  $("#stats").innerHTML = [
+    [active.length, "People on record"],
+    [members.filter((m) => m.status === "member").length, "Members"],
+    [members.filter((m) => m.created_at.slice(0, 7) === month).length, "First-timers this month"],
+    [count(today === sun ? today : sun), today === sun ? "Checked in today" : `In church last Sunday (${nice(sun, { day: "numeric", month: "short" })})`],
+  ].map(([v, l]) => `<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+  const suns = Array.from({ length: 8 }, (_, i) => addDays(sun, -7 * (7 - i)));
+  const vals = suns.map(count), max = Math.max(1, ...vals);
+  $("#trend").innerHTML = `<div class="bars">${vals.map((v) => `<div style="height:${(v / max) * 100}%"><span>${v}</span></div>`).join("")}</div>
+    <div class="barl">${suns.map((s) => `<div>${nice(s, { day: "numeric", month: "short" })}</div>`).join("")}</div>`;
+  const horizon = addDays(today, 30);
+  const up = active.filter((m) => m.date_of_birth).map((m) => ({ m, d: nextBirthday(m.date_of_birth) })).filter((x) => x.d > today && x.d <= horizon).sort((a, b) => a.d.localeCompare(b.d));
+  $("#upcoming").innerHTML = up.length ? up.map(({ m, d }) => `<div style="padding:6px 0;border-bottom:1px solid #221c17"><b style="color:var(--text)">${esc(m.first_name)} ${esc(m.last_name)}</b> · ${nice(d, { weekday: "short", day: "numeric", month: "short" })}</div>`).join("") : "No birthdays in the next 30 days.";
+  $("#newest").innerHTML = memberTable(members.slice(0, 8));
+}
+
+// ===== MEMBERS =====
+function memberTable(list) {
+  if (!list.length) return '<p class="muted">Nobody here yet.</p>';
+  return `<table class="tbl"><tr><th></th><th>Name</th><th>Phone</th><th>Email</th><th>Team</th><th>Status</th><th>Joined</th><th>Last in</th></tr>${list.map((m) => `
+    <tr class="click" data-id="${m.id}"><td>${av(m)}</td><td><b>${esc(m.first_name)} ${esc(m.last_name)}</b></td><td>${esc(m.phone)}</td><td>${esc(m.email)}</td>
+    <td>${esc(teamName(m.team_id))}</td><td><span class="pill ${m.status}">${m.status.replace("_", "-")}</span></td><td>${nice(m.created_at.slice(0, 10))}</td><td>${nice(lastSeen(m.id))}</td></tr>`).join("")}</table>`;
+}
+function filtered() {
+  const q = $("#q").value.trim().toLowerCase(), st = $("#fStatus").value, tm = $("#fTeam").value;
+  return members.filter((m) => (!st || m.status === st) && (!tm || String(m.team_id) === tm) &&
+    (!q || [m.first_name, m.last_name, m.first_name + " " + m.last_name, m.email, m.phone, m.postcode, m.member_code].some((v) => (v || "").toLowerCase().includes(q))));
+}
+function renderMembers() { const l = filtered(); $("#memCount").textContent = `${l.length} of ${members.length}`; $("#memTbl").innerHTML = memberTable(l).replace(/^<table class="tbl">|<\/table>$/g, ""); }
+["#q", "#fStatus", "#fTeam"].forEach((s) => $(s).addEventListener("input", renderMembers));
+document.addEventListener("click", (e) => { const r = e.target.closest("tr.click"); if (r) openMember(r.dataset.id); });
+$("#csvMembers").onclick = () => csv(`snl-members-${ldn()}.csv`, [["First name", "Last name", "Email", "Phone", "Date of birth", "Address", "Postcode", "Team", "Status", "Wants membership", "WhatsApp community", "How heard", "Joined", "Last in", "Code"],
+  ...filtered().map((m) => [m.first_name, m.last_name, m.email, m.phone, m.date_of_birth, m.address, m.postcode, teamName(m.team_id), m.status, m.wants_membership ? "Yes" : "No", m.join_community ? "Yes" : "No", m.how_heard, m.created_at.slice(0, 10), lastSeen(m.id), m.member_code])]);
+
+// ===== BIRTHDAY CARDS =====
+let todaysBdays = [];
+const fillName = (t, n) => String(t || "").replaceAll("{name}", n);
+const waNum = (p) => { let d = String(p).replace(/\D/g, ""); if (d.startsWith("00")) d = d.slice(2); if (d.startsWith("0")) d = "44" + d.slice(1); return d; };
+async function makeCard(memberId) {
+  const { data: { session } } = await sb.auth.getSession();
+  const r = await fetch(`${SNL.SUPABASE_URL}/functions/v1/birthday-card`, {
+    method: "POST", headers: { apikey: SNL.SUPABASE_KEY, Authorization: `Bearer ${session.access_token}`, "Content-Type": "application/json" },
+    body: JSON.stringify({ member_id: memberId, date: ldn() }),
+  });
+  const out = await r.json();
+  if (!out.ok) throw new Error(out.error || "card failed");
+  return out;
+}
+async function shareCard(path, caption, name, btn) {
+  const old = btn ? btn.textContent : "";
+  if (btn) btn.textContent = "Preparing…";
+  try {
+    const { data, error } = await sb.storage.from("cards").download(path);
+    if (error) throw error;
+    const file = new File([data], `happy-birthday-${name.toLowerCase().replace(/[^a-z0-9]+/g, "-")}.png`, { type: "image/png" });
+    try { await navigator.clipboard.writeText(caption); } catch {}
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      await navigator.share({ files: [file], text: caption });
+    } else {
+      const a = document.createElement("a"); a.href = URL.createObjectURL(file); a.download = file.name; a.click();
+      alert("Card downloaded and caption copied. Open WhatsApp, attach the card and paste the caption.\n\n(On a phone, this button opens WhatsApp directly.)");
+    }
+  } catch (e) { if (e.name !== "AbortError") alert("Couldn't share: " + e.message); }
+  if (btn) btn.textContent = old;
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-share]"); if (!b) return;
+  const bd = todaysBdays[+b.dataset.share]; if (!bd?.card_path) return alert("The card is still being made. Try again in a moment.");
+  shareCard(bd.card_path, fillName(settings.birthday_caption, bd.first_name), bd.first_name, b);
+});
+
+function closeModal() { $("#modal").classList.add("hidden"); }
+$("#modal").addEventListener("click", (e) => { if (e.target.id === "modal") closeModal(); });
+
+function openMember(id) {
+  const m = members.find((x) => x.id === id); if (!m) return;
+  const hist = attendance.filter((a) => a.member_id === id).map((a) => a.service_date).sort().reverse();
+  const opt = (v, cur, label) => `<option value="${v}" ${String(cur ?? "") === String(v) ? "selected" : ""}>${label}</option>`;
+  $("#modalBox").innerHTML = `
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap">
+      <div>${av(m, "bigav")}</div>
+      <div style="flex:1"><h2 style="margin:0">${esc(m.first_name)} ${esc(m.last_name)}</h2>
+        <div class="muted">Joined ${nice(m.created_at.slice(0, 10))} · Code <span class="code" style="font-size:.95rem">${m.member_code}</span></div></div>
+      <button class="btn ghost small" id="mClose">Close</button>
+    </div>
+    <form id="mf" novalidate>
+      <div class="row">
+        <div><label>First name</label><input name="first_name" value="${esc(m.first_name)}"></div>
+        <div><label>Last name</label><input name="last_name" value="${esc(m.last_name)}"></div>
+        <div><label>Email</label><input name="email" type="email" value="${esc(m.email)}"></div>
+        <div><label>Phone</label><input name="phone" value="${esc(m.phone)}"></div>
+        <div><label>Date of birth</label><input name="date_of_birth" type="date" value="${esc(m.date_of_birth)}"></div>
+        <div><label>Postcode</label><input name="postcode" value="${esc(m.postcode)}"></div>
+      </div>
+      <label>Address</label><input name="address" value="${esc(m.address)}">
+      <div class="row">
+        <div><label>Status</label><select name="status">${opt("first_timer", m.status, "First-timer")}${opt("member", m.status, "Member")}${opt("inactive", m.status, "Inactive")}</select></div>
+        <div><label>Team</label><select name="team_id">${opt("", m.team_id, "No team")}${teams.map((t) => opt(t.id, m.team_id, esc(t.name))).join("")}</select></div>
+      </div>
+      <label>Photo</label><input type="file" name="photo" accept="image/*">
+      <label class="check" style="margin-top:14px"><input type="checkbox" name="birthday_share" ${m.birthday_share ? "checked" : ""}><span>Happy for a birthday card to be posted in the WhatsApp community</span></label>
+      ${m.prayer_request ? `<label>Prayer request</label><div class="card" style="margin:0;padding:12px">${esc(m.prayer_request)}</div>` : ""}
+      <label>Notes <span class="opt">(admin only)</span></label><textarea name="notes">${esc(m.notes)}</textarea>
+      <p class="muted" style="font-size:.85rem">Wants membership: ${m.wants_membership ? "Yes" : "No"} · WhatsApp community: ${m.join_community ? "Yes" : "No"} · Heard via: ${esc(m.how_heard || "—")} · Consent: ${m.consent_given ? nice(m.consent_at?.slice(0, 10)) : "—"}</p>
+      <div id="mMsg"></div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px">
+        <button class="btn small">Save changes</button>
+        <button type="button" class="btn ghost small" id="mCheck">Mark present today</button>
+        <button type="button" class="btn ghost small" id="mQr">Show QR</button>
+        <button type="button" class="btn ghost small" id="mCard">Birthday card</button>
+        <button type="button" class="btn danger small" id="mDel" style="margin-left:auto">Delete record</button>
+      </div>
+    </form>
+    <div id="mQrBox" class="center hidden"><div class="qrbox"><img src="${qrUrl("SNL-" + m.member_code)}" alt=""></div></div>
+    <div id="mCardBox" class="center hidden" style="margin-top:14px"></div>
+    <h3 style="margin-top:22px">Attendance (${hist.length})</h3>
+    <p class="muted">${hist.length ? hist.slice(0, 30).map((d) => nice(d, { day: "numeric", month: "short", year: "2-digit" })).join(" · ") : "Not recorded yet."}</p>`;
+  $("#modal").classList.remove("hidden");
+  $("#mClose").onclick = closeModal;
+  $("#mQr").onclick = () => $("#mQrBox").classList.toggle("hidden");
+  $("#mCard").onclick = async () => {
+    const box = $("#mCardBox"); box.classList.remove("hidden"); box.innerHTML = '<p class="muted">Making the card…</p>';
+    try {
+      const { path } = await makeCard(id);
+      const { data } = await sb.storage.from("cards").createSignedUrl(path, 3600);
+      box.innerHTML = `<img src="${data.signedUrl}" style="width:min(360px,100%);border-radius:12px" alt="Birthday card">
+        <p><button class="btn wa small" id="mShare">Share to WhatsApp</button></p>
+        ${m.birthday_share ? "" : '<p class="muted" style="font-size:.85rem">Note: they haven\'t agreed to a public birthday post.</p>'}`;
+      $("#mShare").onclick = (e) => shareCard(path, fillName(settings.birthday_caption, m.first_name), m.first_name, e.target);
+    } catch (e) { box.innerHTML = `<div class="msg err">${esc(e.message)}</div>`; }
+  };
+  $("#mCheck").onclick = async () => {
+    const { error } = await sb.from("attendance").upsert({ member_id: id, service_date: ldn(), method: "manual", checked_in_by: me.id }, { onConflict: "member_id,service_date", ignoreDuplicates: true });
+    $("#mMsg").innerHTML = error ? `<div class="msg err">${esc(error.message)}</div>` : '<div class="msg ok">Marked present today.</div>';
+    if (!error) { await loadAll(); }
+  };
+  $("#mDel").onclick = async () => {
+    const typed = prompt(`This permanently deletes ${m.first_name}'s record, photo and attendance history.\nType DELETE to confirm.`);
+    if (typed !== "DELETE") return;
+    if (m.photo_path) await sb.storage.from("member-photos").remove([m.photo_path]);
+    const { error } = await sb.from("members").delete().eq("id", id);
+    if (error) return alert(error.message);
+    closeModal(); await loadAll(); renderMembers();
+  };
+  $("#mf").addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const f = e.target, upd = {};
+    ["first_name", "last_name", "email", "phone", "date_of_birth", "postcode", "address", "status", "notes"].forEach((k) => upd[k] = f[k].value.trim() || null);
+    upd.team_id = f.team_id.value ? +f.team_id.value : null;
+    upd.birthday_share = f.birthday_share.checked;
+    if (!upd.first_name || !upd.last_name) { $("#mMsg").innerHTML = '<div class="msg err">Name is required.</div>'; return; }
+    upd.status = upd.status || "first_timer";
+    const file = f.photo.files[0];
+    if (file) {
+      const path = `${id}/${crypto.randomUUID()}.${(file.type.split("/")[1] || "jpg").replace("jpeg", "jpg")}`;
+      const { error } = await sb.storage.from("member-photos").upload(path, file, { contentType: file.type });
+      if (error) { $("#mMsg").innerHTML = `<div class="msg err">Photo: ${esc(error.message)}</div>`; return; }
+      if (m.photo_path) await sb.storage.from("member-photos").remove([m.photo_path]);
+      upd.photo_path = path;
+    }
+    const { error } = await sb.from("members").update(upd).eq("id", id);
+    if (error) { $("#mMsg").innerHTML = `<div class="msg err">${esc(error.message)}</div>`; return; }
+    await loadAll(); renderMembers(); openMember(id);
+    $("#mMsg").innerHTML = '<div class="msg ok">Saved.</div>';
+  });
+}
+
+// ===== ATTENDANCE =====
+$("#attDate").addEventListener("change", renderAttendance);
+function renderAttendance() {
+  if (!$("#attDate").value) $("#attDate").value = lastSunday();
+  const d = $("#attDate").value;
+  const rows = attendance.filter((a) => a.service_date === d);
+  const ids = new Set(rows.map((a) => a.member_id));
+  const present = rows.map((a) => ({ a, m: members.find((m) => m.id === a.member_id) })).filter((x) => x.m);
+  const absent = members.filter((m) => m.status !== "inactive" && !ids.has(m.id) && m.created_at.slice(0, 10) <= d)
+    .map((m) => ({ m, l: lastSeen(m.id) })).sort((a, b) => (a.l || "").localeCompare(b.l || ""));
+  const firstTimers = members.filter((m) => m.created_at.slice(0, 10) === d).length;
+  $("#attStats").innerHTML = [[present.length, "Present"], [absent.length, "Not in"], [firstTimers, "New first-timers"],
+    [present.filter((x) => x.a.method === "qr").length, "Checked in by QR"]].map(([v, l]) => `<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join("");
+  const time = (iso) => new Date(iso).toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit", timeZone: "Europe/London" });
+  $("#present").innerHTML = present.length ? `<table class="tbl">${present.map(({ a, m }) => `<tr class="click" data-id="${m.id}"><td>${av(m)}</td><td><b>${esc(m.first_name)} ${esc(m.last_name)}</b><div class="muted" style="font-size:.8rem">${esc(teamName(m.team_id))}</div></td><td class="muted">${time(a.checked_in_at)} · ${a.method}</td></tr>`).join("")}</table>` : '<p class="muted">No one recorded for this date.</p>';
+  $("#absent").innerHTML = absent.length ? `<table class="tbl">${absent.map(({ m, l }) => `<tr class="click" data-id="${m.id}"><td>${av(m)}</td><td><b>${esc(m.first_name)} ${esc(m.last_name)}</b><div class="muted" style="font-size:.8rem">Last in: ${l ? nice(l) : "never recorded"}</div></td><td>${m.phone ? `<a href="tel:${esc(m.phone)}">${esc(m.phone)}</a>` : ""}</td></tr>`).join("")}</table>` : '<p class="muted">Everyone was in. 🙌</p>';
+  $("#csvAtt").onclick = () => csv(`snl-attendance-${d}.csv`, [["Name", "Present", "Time", "Method", "Phone", "Email", "Team", "Last in"],
+    ...present.map(({ a, m }) => [`${m.first_name} ${m.last_name}`, "Yes", time(a.checked_in_at), a.method, m.phone, m.email, teamName(m.team_id), d]),
+    ...absent.map(({ m, l }) => [`${m.first_name} ${m.last_name}`, "No", "", "", m.phone, m.email, teamName(m.team_id), l])]);
+}
+
+// ===== SCAN =====
+let cam = null, lastCode = "", lastAt = 0, scanned = 0;
+async function doScan(code) {
+  const { data, error } = await sb.rpc("scan_checkin", { p_code: code });
+  const box = $("#scanRes");
+  if (error) { box.innerHTML = `<div class="scanres bad"><b>Error</b><div>${esc(error.message)}</div></div>`; return; }
+  if (!data.ok) { box.innerHTML = `<div class="scanres bad"><h3>Code not recognised</h3><div class="muted">Ask them to fill the welcome form.</div></div>`; beep(220); return; }
+  let photo = "";
+  if (data.photo_path) { const { data: s } = await sb.storage.from("member-photos").createSignedUrl(data.photo_path, 600); if (s) photo = `<img src="${s.signedUrl}" alt="">`; }
+  if (!data.already) scanned++;
+  box.innerHTML = `<div class="scanres ${data.already ? "warn" : "ok"}">${photo}<h2 style="margin:8px 0 0">${esc(data.name)}</h2>
+    <div>${data.already ? "Already checked in today" : "✓ Checked in"}${data.team ? ` · ${esc(data.team)}` : ""}</div>
+    ${data.birthday_today ? '<div style="margin-top:8px;font-size:1.1rem">🎂 It\'s their birthday today!</div>' : ""}</div>`;
+  $("#scanCount").textContent = `${scanned} checked in on this device this session`;
+  beep(data.already ? 440 : 880);
+  if (role === "admin") loadAll();
+}
+function beep(f) { try { const c = new AudioContext(), o = c.createOscillator(); o.frequency.value = f; o.connect(c.destination); o.start(); setTimeout(() => { o.stop(); c.close(); }, 120); navigator.vibrate && navigator.vibrate(80); } catch {} }
+$("#camBtn").onclick = async () => {
+  if (cam) return stopCam();
+  cam = new Html5Qrcode("reader");
+  try {
+    await cam.start({ facingMode: "environment" }, { fps: 10, qrbox: 240 }, (text) => {
+      const now = Date.now(); if (text === lastCode && now - lastAt < 4000) return;
+      lastCode = text; lastAt = now; doScan(text);
+    });
+    $("#camBtn").textContent = "Stop camera";
+  } catch (e) { cam = null; $("#scanRes").innerHTML = `<div class="scanres bad">Camera unavailable: ${esc(e.message || e)}. Allow camera access and try again.</div>`; }
+};
+function stopCam() { if (cam) { cam.stop().catch(() => {}); cam = null; $("#camBtn").textContent = "Start camera"; } }
+$("#codeForm").addEventListener("submit", (e) => { e.preventDefault(); const c = $("#codeIn").value.trim(); if (c) { doScan(c); $("#codeIn").value = ""; } });
+
+// ===== SETTINGS =====
+async function renderSettings() {
+  $("#commLink").value = settings.community_link || "";
+  $("#alertEmails").value = settings.admin_emails || "";
+  $("#teamTbl").innerHTML = `<tr><th>Team</th><th>WhatsApp group link</th><th>Show on form</th></tr>` + teams.map((t) => `
+    <tr data-tid="${t.id}"><td><input class="tn" value="${esc(t.name)}"></td><td><input class="tl" value="${esc(t.whatsapp_link)}" placeholder="https://chat.whatsapp.com/…"></td><td><input class="ta" type="checkbox" ${t.active ? "checked" : ""} style="width:20px;height:20px;accent-color:var(--gold)"></td></tr>`).join("");
+  const { data: staff } = await sb.from("staff").select("*").order("created_at");
+  $("#staffTbl").innerHTML = `<tr><th>Name</th><th>Email</th><th>Role</th><th></th></tr>` + (staff || []).map((s) => `
+    <tr><td>${esc(s.full_name)}</td><td>${esc(s.email)}</td><td>${s.role}</td><td>${s.user_id === me.id ? '<span class="muted">you</span>' : `<button class="btn danger small" data-rm="${s.user_id}">Remove</button>`}</td></tr>`).join("");
+  $("#posterQr1").src = qrUrl(SNL.base() + "checkin.html");
+  $("#posterQr2").src = qrUrl(SNL.base() + "index.html");
+  $("#bdMsg").value = settings.birthday_message || "";
+  $("#bdCap").value = settings.birthday_caption || "";
+  $("#smsOn").checked = settings.sms_enabled === "true";
+  $("#smsFrom").value = settings.sms_sender || "ShekinahLDN";
+  $("#smsText").value = settings.sms_text || "";
+  smsCount();
+}
+function smsCount() {
+  const t = fillName($("#smsText").value, "Oluwaseyi");
+  const gsm = /^[A-Za-z0-9 @£$¥èéùìòÇØøÅå_ÆæßÉ!"#%&'()*+,\-./:;<=>?¡ÄÖÑÜ§¿äöñüà\n\r]*$/.test(t);
+  const per = gsm ? (t.length > 160 ? 153 : 160) : (t.length > 70 ? 67 : 70);
+  const parts = Math.max(1, Math.ceil(t.length / per));
+  $("#smsCount").textContent = `${t.length} characters · ${parts} text${parts > 1 ? "s" : ""} per person${gsm ? "" : " (emoji or special characters make texts shorter and cost more)"}`;
+}
+$("#smsText").addEventListener("input", smsCount);
+$("#saveBd").onclick = async () => {
+  const from = $("#smsFrom").value.trim();
+  if (!/^[A-Za-z0-9]{3,11}$/.test(from)) { $("#bdMsgOut").textContent = "Sender name: 3–11 letters/numbers, no spaces."; return; }
+  const rows = [["birthday_message", $("#bdMsg").value.trim()], ["birthday_caption", $("#bdCap").value.trim()], ["sms_enabled", $("#smsOn").checked ? "true" : "false"], ["sms_sender", from], ["sms_text", $("#smsText").value.trim()]]
+    .map(([key, value]) => ({ key, value }));
+  const { error } = await sb.from("settings").upsert(rows);
+  const f = $("#logoUp").files[0];
+  let logoErr = null;
+  if (f) ({ error: logoErr } = await sb.storage.from("brand").upload("logo.png", f, { contentType: "image/png", upsert: true }));
+  $("#bdMsgOut").textContent = error || logoErr ? (error || logoErr).message : "Saved.";
+  rows.forEach((r) => (settings[r.key] = r.value));
+};
+$("#addTeam").onclick = () => {
+  const tr = document.createElement("tr"); tr.dataset.tid = "new";
+  tr.innerHTML = `<td><input class="tn" placeholder="Team name"></td><td><input class="tl" placeholder="https://chat.whatsapp.com/…"></td><td><input class="ta" type="checkbox" checked style="width:20px;height:20px;accent-color:var(--gold)"></td>`;
+  $("#teamTbl").appendChild(tr);
+};
+$("#saveLinks").onclick = async () => {
+  const bad = [...document.querySelectorAll("#teamTbl .tl"), $("#commLink")].find((i) => i.value.trim() && !/^https:\/\/chat\.whatsapp\.com\/[A-Za-z0-9]+/.test(i.value.trim()));
+  if (bad) { $("#linkMsg").innerHTML = '<div class="msg err">Links should look like https://chat.whatsapp.com/…</div>'; bad.focus(); return; }
+  const clean = (v) => { v = v.trim(); return v ? v.split("?")[0] : null; };
+  const ops = [sb.from("settings").upsert({ key: "community_link", value: clean($("#commLink").value) })];
+  let order = 0;
+  document.querySelectorAll("#teamTbl tr[data-tid]").forEach((tr) => {
+    const row = { name: tr.querySelector(".tn").value.trim(), whatsapp_link: clean(tr.querySelector(".tl").value), active: tr.querySelector(".ta").checked, sort_order: ++order };
+    if (!row.name) return;
+    ops.push(tr.dataset.tid === "new" ? sb.from("teams").insert(row) : sb.from("teams").update(row).eq("id", +tr.dataset.tid));
+  });
+  const res = await Promise.all(ops), err = res.find((r) => r.error);
+  $("#linkMsg").innerHTML = err ? `<div class="msg err">${esc(err.error.message)}</div>` : '<div class="msg ok">Saved.</div>';
+  await loadAll(); renderSettings();
+};
+$("#saveAlerts").onclick = async () => {
+  const v = $("#alertEmails").value.split(",").map((s) => s.trim()).filter(Boolean).join(",");
+  const { error } = await sb.from("settings").upsert({ key: "admin_emails", value: v });
+  $("#alertMsg").textContent = error ? error.message : "Saved."; settings.admin_emails = v;
+};
+$("#staffTbl").addEventListener("click", async (e) => {
+  const b = e.target.closest("[data-rm]"); if (!b || !confirm("Remove this person's access?")) return;
+  await sb.from("staff").delete().eq("user_id", b.dataset.rm); renderSettings();
+});
+$("#invBtn").onclick = async () => {
+  const email = $("#invEmail").value.trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { $("#invOut").innerHTML = '<div class="msg err">Enter a valid email.</div>'; return; }
+  const { data, error } = await sb.from("staff_invites").insert({ email, full_name: $("#invName").value.trim() || null, role: $("#invRole").value }).select("token").single();
+  if (error) { $("#invOut").innerHTML = `<div class="msg err">${esc(error.message)}</div>`; return; }
+  const link = `${SNL.base()}setup.html?t=${data.token}`;
+  $("#invOut").innerHTML = `<div class="msg ok">Send this link to ${esc(email)} (valid 14 days, one use):</div><div class="linkbox"><input readonly value="${esc(link)}" id="invLink"><button class="btn small" id="copyInv">Copy</button></div>`;
+  $("#copyInv").onclick = () => { navigator.clipboard.writeText(link); $("#copyInv").textContent = "Copied"; };
+};
+
+boot();
+</script>
+</body>
+</html>
