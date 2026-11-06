@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sunday Check-in · Shekinah Nation London</title>
+<title>Sunday Check-in · My Shekinah</title>
 <meta name="theme-color" content="#FAF9F6">
 <link rel="icon" href="logo.png">
 <link rel="stylesheet" href="style.css">
@@ -32,14 +32,14 @@
       <h3 style="margin:0 0 4px">First time here?</h3>
       <p class="muted" style="margin:0 0 14px;font-size:.92rem">We'd love to get to know you.</p>
       <a class="btn ghost block" href="index.html">Fill the welcome form</a>
-      <p class="muted" style="margin:16px 0 0;font-size:.9rem">Lost your QR code? <a href="#" id="toQr">Get it again</a></p>
+      <p class="muted" style="margin:16px 0 0;font-size:.9rem">Lost your pass? <a href="#" id="toQr">Get it again</a></p>
     </div>
   </section>
 
   <section id="qrView" class="hidden">
     <div class="page-head">
-      <p class="eyebrow">Your QR code</p>
-      <h1>Get your check-in code</h1>
+      <p class="eyebrow">My Shekinah</p>
+      <h1>Get your My Shekinah Pass</h1>
       <p class="lead">Enter the email you registered with and your birthday.</p>
     </div>
     <form id="qf" class="card" novalidate>
@@ -52,16 +52,16 @@
     </form>
     <div id="qrOut" class="card center hidden">
       <h3 id="qrHi"></h3>
-      <div class="qrbox"><img id="qrImg" alt="Your check-in QR code"></div>
-      <div class="code" id="qrCode"></div>
-      <p style="margin-top:16px"><a class="btn ghost" id="qrSave" download="shekinah-checkin-qr.png">Save QR to my phone</a></p>
+      <img class="pass" id="passImg" alt="Your My Shekinah check-in pass">
+      <p style="margin-top:16px"><a class="btn" id="qrSave" download="my-shekinah-pass.png">Save my pass</a></p>
     </div>
     <p class="center"><a href="#" id="back">← Back to check-in</a></p>
   </section>
-  <footer>Shekinah Nation London · Registered charity 1206699</footer>
+  <footer><b>My Shekinah</b> · Your home. Your community. Your journey.<br>Shekinah Nation London · Registered charity 1206699</footer>
 </main>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="config.js"></script>
+<script src="pass.js"></script>
 <script>
 const $ = (s) => document.querySelector(s);
 const rpc = (fn, body) => fetch(`${SNL.SUPABASE_URL}/rest/v1/rpc/${fn}`, {
@@ -102,9 +102,8 @@ $("#qf").addEventListener("submit", async (e) => {
   if (!email || !dob) { msg(m, "Please enter your email and choose your birthday (day and month)."); return; }
   const out = await rpc("my_qr", { p_email: email, p_dob: dob }).catch(() => ({}));
   if (!out.ok) { msg(m, "We couldn't match those details. Please see an usher on Sunday."); return; }
-  const qr = qrcode(0, "M"); qr.addData(`SNL-${out.member_code}`); qr.make();
-  const url = qr.createDataURL(10, 2);
-  $("#qrImg").src = url; $("#qrSave").href = url; $("#qrCode").textContent = out.member_code;
+  const url = await SNLPass.make({ name: out.first_name, code: out.member_code });
+  $("#passImg").src = url; $("#qrSave").href = url;
   $("#qrHi").textContent = `Here you go, ${out.first_name}`;
   $("#qrOut").classList.remove("hidden");
 });

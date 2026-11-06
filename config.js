@@ -3,6 +3,9 @@ window.SNL = {
   SUPABASE_URL: "https://zrsuohmelsekrtbrggvn.supabase.co",
   SUPABASE_KEY: "sb_publishable_AbCB3T_84JFeKvQ6aG4XOg_MXRFnQQT",
   CHURCH: "Shekinah Nation London",
+  // Public addresses (members site and admin dashboard live on separate subdomains)
+  PUBLIC_URL: "https://members.shekinahnationlondon.com/",
+  ADMIN_URL: "https://admin.shekinahnationlondon.com/",
   // Birthdays: day + month (year optional). With no year we store 1904 (a leap year, so 29 Feb works).
   NO_YEAR: 1904,
   MONTHS: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],

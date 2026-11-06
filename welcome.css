@@ -247,3 +247,13 @@ select:invalid, select.empty { color: #8A928F; font-weight: 400; }
 .wa-step.done-step .n { background: var(--gold); color: var(--forest); }
 .note { background: #FFF8D6; }
 .photo-pick .avatar { background: var(--gold); color: var(--forest); }
+
+/* ---- My Shekinah Pass ---- */
+.pass-wrap { display: grid; justify-items: center; gap: 14px; }
+.pass { width: 100%; max-width: 300px; height: auto; border-radius: 22px; box-shadow: 0 18px 40px -18px rgba(0,0,0,.45); aspect-ratio: 1080 / 1560; background: #141414; }
+.pass-actions { text-align: center; }
+.pass-actions .hint { margin-top: 8px; }
+footer b { color: var(--forest); font-weight: 700; }
+.check-card { border: 1px solid var(--line-strong); border-radius: var(--radius); padding: 14px; background: var(--white); transition: border-color .18s var(--ease), background .18s var(--ease); }
+.check-card:has(input:checked) { border-color: var(--forest); background: var(--emerald-50); }
+.field.followup { margin-top: 18px; }

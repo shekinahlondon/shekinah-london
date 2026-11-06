@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Welcome Home · Shekinah Nation London</title>
+<title>My Shekinah · Shekinah Nation London</title>
 <meta name="description" content="New to Shekinah Nation London? We'd love to get to know you and help you feel at home.">
 <meta name="theme-color" content="#FAF9F6">
 <link rel="icon" href="logo.png">
@@ -139,6 +139,14 @@
               <span class="label" id="l_team">Which team would you like to serve in? <span class="opt">Optional</span></span>
               <div class="chips" id="teams" role="radiogroup" aria-labelledby="l_team"><span class="hint">Loading teams…</span></div>
             </div>
+
+            <div class="field followup">
+              <label class="check check-card">
+                <input type="checkbox" id="wants_followup" name="wants_followup" value="yes">
+                <span class="check-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg></span>
+                <span><b>I'd like someone from the church to get in touch with me</b><span class="hint" style="display:block;margin-top:2px">For a chat, prayer or any questions you have. <span class="opt">Optional</span></span></span>
+              </label>
+            </div>
           </fieldset>
 
           <!-- ---------- STEP 3 ---------- -->
@@ -182,11 +190,16 @@
                 <span class="check-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg></span>
                 <span><b>Celebrate my birthday</b> in the church WhatsApp community with a birthday card (with my photo, if I've added one). <span class="opt">Optional</span></span>
               </label>
+              <label class="check">
+                <input type="checkbox" id="updates_consent" name="updates_consent" value="yes">
+                <span class="check-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg></span>
+                <span><b>Send me church news and updates</b> by email, WhatsApp or text, such as events and special services. You can stop these at any time. <span class="opt">Optional</span></span>
+              </label>
               <div class="field" data-for="consent">
                 <label class="check">
                   <input type="checkbox" id="consent" name="consent" value="yes" aria-describedby="e_consent">
                   <span class="check-box"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5L19 7"/></svg></span>
-                  <span>I agree that Shekinah Nation (registered charity 1206699) may store these details to keep in touch with me, record my attendance and celebrate my birthday.</span>
+                  <span>I agree that Shekinah Nation (registered charity 1206699) may keep these details to look after me as part of the church, record my attendance and respond to the choices I've made above.</span>
                 </label>
                 <p class="ferr" id="e_consent">Please tick this box so we can keep your details.</p>
               </div>
@@ -200,7 +213,9 @@
               </summary>
               <div class="body">
                 <p>Your details are held by Shekinah Nation (registered charity 1206699) and are only seen by our church admin team. Prayer requests are only seen by our pastoral team.</p>
-                <p>We use them to keep in touch with you, record attendance at our services and, if you've chosen to, celebrate your birthday. We never sell or share your details.</p>
+                <p>We use them to look after you as part of the church, record attendance at our services and act on the choices you've made, such as celebrating your birthday or sending you news. We'll only send you news and updates if you've ticked that box.</p>
+                <p>Because these details relate to church life, we treat them as sensitive. We never sell them or share them outside the church without your permission.</p>
+                <p>This form is for adults. Parents or guardians can speak to our Children's team about registering children.</p>
                 <p>You can ask us to update or delete your details at any time by emailing <a href="mailto:shekinahnationlondon@gmail.com">shekinahnationlondon@gmail.com</a> or speaking to one of our team.</p>
               </div>
             </details>
@@ -237,15 +252,14 @@
         </div>
 
         <div class="done-section">
-          <h3>Your Sunday check-in code</h3>
-          <p>Show this to an usher when you arrive. Save it to your phone so it's always handy.</p>
-          <div class="qr-wrap">
-            <div class="qr"><img id="qrImg" alt="Your personal check-in QR code"></div>
-            <div>
-              <div class="code" id="qrCode"></div>
-              <a class="btn btn-save" id="qrSave" download="shekinah-checkin-qr.png">
+          <h3>Your My Shekinah Pass</h3>
+          <p>Your personal check-in pass. Show it to an usher when you arrive on Sunday, and save it to your phone so it's always handy.</p>
+          <div class="pass-wrap">
+            <img class="pass" id="passImg" alt="Your My Shekinah check-in pass">
+            <div class="pass-actions">
+              <a class="btn btn-save" id="qrSave" download="my-shekinah-pass.png">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
-                Save to my phone
+                Save my pass
               </a>
               <p class="hint" id="emailNote"></p>
             </div>
@@ -257,11 +271,12 @@
     </div>
   </main>
 
-  <footer>Shekinah Nation London · Registered charity 1206699</footer>
+  <footer><b>My Shekinah</b> · Your home. Your community. Your journey.<br>Shekinah Nation London · Registered charity 1206699</footer>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script src="config.js"></script>
+<script src="pass.js"></script>
 <script>
 (() => {
   const $ = (s, r = document) => r.querySelector(s);
@@ -456,10 +471,8 @@
     const name = out.first_name || "friend";
     $("#doneLead").textContent = `Thank you, ${name}. Your details have been received, and we're so glad you're part of the family.`;
 
-    const qr = qrcode(0, "M"); qr.addData(`SNL-${out.member_code}`); qr.make();
-    const url = qr.createDataURL(10, 2);
-    $("#qrImg").src = url; $("#qrSave").href = url; $("#qrCode").textContent = out.member_code;
-    $("#emailNote").textContent = hasEmail ? "We've also emailed it to you." : "Lost it? You can get it again from our check-in page.";
+    SNLPass.make({ name: `${out.first_name}`, code: out.member_code }).then((url) => { $("#passImg").src = url; $("#qrSave").href = url; });
+    $("#emailNote").textContent = hasEmail ? "We've also emailed your check-in code to you." : "Lost it? You can get it again from our check-in page.";
 
     const list = [];
     if (out.community_link) {

@@ -127,3 +127,7 @@ footer { color: var(--muted); font-size: .78rem; text-align: center; margin-top:
 /* ---- Yellow & black brand accents ---- */
 .btn.ghost { border-color: var(--forest); color: var(--forest); }
 .btn.ghost:hover { background: #FFF6CC; }
+
+/* ---- My Shekinah Pass ---- */
+.pass { display: block; width: 100%; max-width: 300px; height: auto; margin: 6px auto 0; border-radius: 22px; box-shadow: 0 18px 40px -18px rgba(0,0,0,.45); aspect-ratio: 1080 / 1560; background: #141414; }
+footer b { color: var(--forest); font-weight: 700; }
