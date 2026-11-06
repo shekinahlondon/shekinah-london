@@ -13,7 +13,7 @@
   .top { position: sticky; top: 0; z-index: 5; background: rgba(255,255,255,.94); backdrop-filter: blur(10px); border-bottom: 1px solid var(--line); }
   .top .in { max-width: 1180px; margin: 0 auto; padding: 10px 16px; display: flex; align-items: center; gap: 12px 18px; flex-wrap: wrap; }
   .topbrand { display: flex; align-items: center; gap: 12px; text-decoration: none; }
-  .topbrand img { height: 44px; width: auto; }
+  .topbrand img { height: 44px; width: 44px; }
   .topbrand span { border-left: 1px solid var(--line); padding-left: 12px; font-size: .78rem; line-height: 1.25; color: var(--muted); }
   .topbrand b { display: block; color: var(--forest); font-weight: 700; font-size: .9rem; }
   .tabs { display: flex; gap: 4px; overflow-x: auto; flex: 1; scrollbar-width: none; order: 3; flex-basis: 100%; }
@@ -30,7 +30,7 @@
   .stat { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 18px; }
   .stat .v { font-family: "Fraunces", Georgia, serif; font-weight: 500; font-size: 2.3rem; line-height: 1; color: var(--forest); }
   .stat .l { color: var(--muted); font-size: .84rem; margin-top: 8px; }
-  .stat:first-child .v { color: var(--emerald); }
+  .stat:first-child .v { color: var(--forest); text-decoration: underline 4px var(--brand-gold); text-underline-offset: 6px; }
   .bday { background: var(--gold-50); border: 1px solid #F3D7A0; border-radius: 16px; padding: 16px 18px; margin-bottom: 16px; color: var(--forest); }
   .bday ul { margin: 8px 0 0; padding-left: 18px; }
   .bdgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 14px; margin-top: 12px; }
@@ -48,7 +48,7 @@
   .av { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; background: var(--purple-50); display: inline-grid; place-items: center; color: var(--purple); font-size: .8rem; font-weight: 700; vertical-align: middle; }
   .pill { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: .76rem; font-weight: 600; background: var(--line-soft); color: var(--muted); white-space: nowrap; }
   .pill.member { background: var(--purple-50); color: var(--purple); }
-  .pill.first_timer { background: var(--emerald-50); color: var(--emerald); }
+  .pill.first_timer { background: #EAF5EF; color: #1E6B45; }
   .toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
   .toolbar label { margin: 0; }
   .toolbar input, .toolbar select { width: auto; flex: 1 1 180px; height: 42px; }
@@ -57,13 +57,13 @@
   .bigav { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; background: var(--purple-50); display: grid; place-items: center; font-size: 2rem; color: var(--purple); font-family: "Fraunces", Georgia, serif; }
   #reader { width: 100%; max-width: 420px; margin: 0 auto; border-radius: 16px; overflow: hidden; background: var(--forest); }
   .scanres { max-width: 420px; margin: 16px auto; text-align: center; border-radius: 16px; padding: 18px; border: 1px solid var(--line); background: var(--white); }
-  .scanres.ok { border-color: #A9D3CB; background: var(--emerald-50); }
+  .scanres.ok { border-color: #A9D3CB; background: #EAF5EF; }
   .scanres.warn { border-color: #F3D7A0; background: var(--gold-50); }
   .scanres.bad { border-color: #E8BDB9; background: var(--err-50); }
   .scanres img { width: 110px; height: 110px; border-radius: 50%; object-fit: cover; margin: 0 auto; }
   .bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; margin-top: 26px; }
   .bars div { flex: 1; background: var(--emerald); border-radius: 6px 6px 0 0; position: relative; min-height: 2px; }
-  .bars div:last-child { background: var(--purple); }
+  .bars div:last-child { background: var(--brand-gold); box-shadow: inset 0 0 0 1.5px var(--forest); }
   .bars span { position: absolute; top: -20px; left: 0; right: 0; text-align: center; font-size: .76rem; font-weight: 600; color: var(--forest); }
   .barl { display: flex; gap: 8px; margin-top: 6px; } .barl div { flex: 1; text-align: center; font-size: .7rem; color: var(--muted); }
   .two { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; } @media (max-width: 800px) { .two { grid-template-columns: 1fr; } }
@@ -85,7 +85,7 @@
 
 <!-- ===== LOGIN ===== -->
 <main class="wrap" id="loginView">
-  <div class="brand-hero"><img class="logo" src="logo.png" alt="Shekinah Nation" width="420" height="372"></div>
+  <div class="brand-hero"><img class="logo" src="logo.png" alt="Shekinah Nation" width="360" height="360"></div>
   <div class="page-head"><p class="eyebrow">Team access</p><h1>Sign in</h1><p class="lead">Members, attendance and birthdays for Shekinah Nation London.</p></div>
   <form id="lf" class="card" novalidate>
     <label for="lem">Email</label><input id="lem" type="email" autocomplete="username">
@@ -99,7 +99,7 @@
 <!-- ===== APP ===== -->
 <div id="appView" class="hidden">
   <div class="top"><div class="in">
-    <a class="topbrand" href="#home"><img src="logo.png" alt="Shekinah Nation" width="420" height="372"><span><b>London</b>Members</span></a>
+    <a class="topbrand" href="#home"><img src="logo.png" alt="Shekinah Nation" width="360" height="360"><span><b>London</b>Members</span></a>
     <nav class="tabs" id="tabs"></nav>
     <div class="who"><span id="whoName"></span><button class="btn ghost small" id="logout">Sign out</button></div>
   </div></div>
